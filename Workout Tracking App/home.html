@@ -169,6 +169,16 @@
       color: rgba(255,255,255,0.7);
     }
     .card-username-date { font-weight: 600; }
+    .follow-btn {
+      font-family: inherit; font-size: 11px; font-weight: 700;
+      color: #fff; background: var(--accent);
+      border: none; border-radius: 8px;
+      padding: 4px 12px; cursor: pointer; margin-left: 8px;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .follow-btn:hover { background: var(--accent-light); }
+    .follow-btn:active { transform: scale(0.95); }
+    .follow-btn.following { background: transparent; border: 1px solid var(--accent-border); color: var(--accent-light); }
 
     .card-actions {
       display: flex; align-items: center; gap: 20px;
@@ -248,6 +258,10 @@
   </div>
 
   <!-- Top Header -->
+  <div style="padding: 18px 20px 0; text-align: center;">
+    <span style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 4px; background: linear-gradient(135deg, var(--accent-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">SESSN</span>
+  </div>
+
   <div class="top-header">
     <div class="top-header-left">
       <div class="avatar">B</div>
@@ -268,7 +282,7 @@
     <div class="streak-info">
       <div class="streak-fire">&#128293;</div>
       <div class="streak-text">
-        <strong>12 DAY STREAK</strong>
+        <strong>5 WEEK STREAK</strong>
         Keep it going!
       </div>
     </div>
@@ -276,8 +290,8 @@
       <div class="streak-dot done">M</div>
       <div class="streak-dot done">T</div>
       <div class="streak-dot done">W</div>
-      <div class="streak-dot done">T</div>
-      <div class="streak-dot today">F</div>
+      <div class="streak-dot upcoming">T</div>
+      <div class="streak-dot done">F</div>
       <div class="streak-dot upcoming">S</div>
       <div class="streak-dot upcoming">S</div>
     </div>
@@ -294,7 +308,7 @@
     <!-- Card 1 — Post Thanksgiving Workout -->
     <div class="workout-card">
       <div class="card-image">
-        <img src="post-thanksgiving.jpg" alt="Post Thanksgiving Workout" style="object-position: center 30%;">
+        <img src="Images/post-thanksgiving.jpg" alt="Post Thanksgiving Workout" style="object-position: center 30%;">
         <div class="card-location">&#128205; Strawberry Field</div>
         <div class="card-workout-title">POST THANKSGIVING WORKOUT</div>
       </div>
@@ -326,7 +340,7 @@
     <!-- Card 2 — Pull Day (back mirror selfie) -->
     <div class="workout-card">
       <div class="card-image">
-        <img src="pull-day.jpg" alt="Wednesday Pull Day" style="object-position: center 55%;">
+        <img src="Images/pull-day.jpg" alt="Wednesday Pull Day" style="object-position: center 55%;">
         <div class="card-location">&#128205; Wells Ave YMCA</div>
         <div class="card-workout-title">WEDNESDAY PULL DAY</div>
       </div>
@@ -358,11 +372,11 @@
     <!-- Card 3 — Leg Day (gym mirror selfie) -->
     <div class="workout-card">
       <div class="card-image">
-        <img src="leg-day.jpg" alt="Friday Leg Day" style="object-position: center 15%;">
+        <img src="Images/leg-day.jpg" alt="Friday Leg Day" style="object-position: center 15%;">
         <div class="card-location">&#128205; Nic Rec Center</div>
         <div class="card-workout-title">FRIDAY LEG DAY</div>
       </div>
-      <div class="card-username-row"><span>lydiakoehler</span><span class="card-username-date">3/12/26</span></div>
+      <div class="card-username-row"><span>lydiakoehler <button class="follow-btn" onclick="toggleFollow(this)">Follow</button></span><span class="card-username-date">3/12/26</span></div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">Split</div>
@@ -436,6 +450,11 @@
         btn.style.color = '';
         btn.querySelector('svg').innerHTML = '<path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/>';
       }
+    }
+
+    function toggleFollow(btn) {
+      btn.classList.toggle('following');
+      btn.textContent = btn.classList.contains('following') ? 'Following' : 'Follow';
     }
 
     function toggleAction(btn) {
