@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Sessn — Friends</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    :root {
+      --accent: #635BFF;
+      --accent-light: #8B85FF;
+      --accent-glow: rgba(99, 91, 255, 0.35);
+      --accent-soft: rgba(99, 91, 255, 0.12);
+      --accent-border: rgba(99, 91, 255, 0.25);
+      --card-bg: #151515;
+      --card-border: rgba(255,255,255,0.06);
+      --gold: #FFD93D;
+      --silver: #C0C0C0;
+      --bronze: #CD7F32;
+    }
+
+    /* ── Status Bar ── */
+    .status-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 24px 0; font-size: 12px; font-weight: 600;
+    }
+    .status-time { font-size: 15px; font-weight: 700; }
+    .status-icons { display: flex; gap: 6px; align-items: center; }
+    .status-icons svg { width: 16px; height: 16px; fill: #fff; }
+
+    /* ── Main Tabs (Groups / Maps) ── */
+    .main-tabs {
+      display: flex;
+      margin: 8px 16px 0;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 4px;
+      gap: 4px;
+    }
+    .main-tab {
+      flex: 1;
+      padding: 12px 0;
+      text-align: center;
+      font-size: 14px; font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      border: none; background: none;
+      font-family: 'Barlow', sans-serif;
+    }
+    .main-tab svg { width: 16px; height: 16px; fill: currentColor; }
+    .main-tab.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 12px var(--accent-glow);
+    }
+
+    /* ── Section Header ── */
+    .section-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 20px 8px;
+    }
+    .section-header h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 1.5px;
+    }
+
+    /* ── Time Filter ── */
+    .time-filter {
+      display: flex;
+      margin: 0 16px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .time-tab {
+      flex: 1;
+      padding: 8px 0;
+      text-align: center;
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      border-radius: 9px;
+      transition: all 0.2s;
+      border: none; background: none;
+      font-family: 'Barlow', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .time-tab.active {
+      background: var(--accent-soft);
+      color: var(--accent-light);
+      border: 1px solid var(--accent-border);
+    }
+
+    /* ── Group Card ── */
+    .group-card {
+      margin: 0 16px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .group-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .group-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .group-icon.lift { background: rgba(91,140,255,0.15); }
+    .group-icon.cardio { background: rgba(91,219,109,0.15); }
+    .group-icon.crew { background: rgba(232,91,255,0.15); }
+    .group-info { flex: 1; }
+    .group-name {
+      font-size: 15px; font-weight: 700;
+    }
+    .group-meta {
+      font-size: 11px; color: rgba(255,255,255,0.4);
+      margin-top: 2px;
+    }
+    .group-category {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      color: var(--accent-light);
+      border: 1px solid var(--accent-border);
+    }
+
+    /* ── Leaderboard ── */
+    .leaderboard {
+      padding: 8px 0 12px;
+    }
+    .leader-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .leader-row:hover { background: rgba(255,255,255,0.03); }
+    .leader-rank {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px; color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.05);
+      flex-shrink: 0;
+    }
+    .leader-rank.gold {
+      background: rgba(255,217,61,0.15);
+      color: var(--gold);
+      box-shadow: 0 0 12px rgba(255,217,61,0.3);
+    }
+    .leader-rank.silver {
+      background: rgba(192,192,192,0.15);
+      color: var(--silver);
+    }
+    .leader-rank.bronze {
+      background: rgba(205,127,50,0.15);
+      color: var(--bronze);
+    }
+    .leader-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px; color: #fff;
+      flex-shrink: 0;
+      border: 2px solid var(--card-border);
+    }
+    .leader-info { flex: 1; min-width: 0; }
+    .leader-name {
+      font-size: 14px; font-weight: 600; color: #fff;
+    }
+    .leader-detail {
+      font-size: 11px; color: rgba(255,255,255,0.35);
+      margin-top: 1px;
+    }
+    .leader-stat {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px; letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.85);
+      flex-shrink: 0;
+    }
+    .leader-stat span {
+      font-size: 11px; opacity: 0.5;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600;
+      margin-left: 2px;
+    }
+    .leader-row.you {
+      background: var(--accent-soft);
+      border-top: 1px solid var(--accent-border);
+      border-bottom: 1px solid var(--accent-border);
+    }
+    .leader-row.you .leader-name { color: var(--accent-light); }
+
+    /* ── Maps Section ── */
+    .map-container {
+      margin: 0 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+    .map-bg {
+      height: 380px;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(99,91,255,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(91,219,109,0.1) 0%, transparent 40%),
+        linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Grid overlay */
+    .map-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    /* Fake roads */
+    .map-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.06) 49%, rgba(255,255,255,0.06) 51%, transparent 52%),
+        linear-gradient(-30deg, transparent 48%, rgba(255,255,255,0.05) 49%, rgba(255,255,255,0.05) 50.5%, transparent 51.5%),
+        linear-gradient(80deg, transparent 65%, rgba(255,255,255,0.04) 66%, rgba(255,255,255,0.04) 67%, transparent 68%);
+    }
+
+    .map-pin {
+      position: absolute;
+      width: 36px; height: 36px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      z-index: 2;
+      transition: transform 0.2s;
+    }
+    .map-pin:hover { transform: rotate(-45deg) scale(1.15); }
+    .map-pin .avatar-pin {
+      transform: rotate(45deg);
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      border: 2px solid #fff;
+    }
+
+    /* Map labels */
+    .map-label {
+      position: absolute;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 6px 10px;
+      z-index: 3;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .map-label-name {
+      font-size: 11px; font-weight: 700;
+      color: #fff;
+    }
+    .map-label-loc {
+      font-size: 9px; color: rgba(255,255,255,0.5);
+      margin-top: 1px;
+    }
+
+    /* Map header */
+    .map-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .map-bar-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 700;
+    }
+    .map-bar-title svg { width: 16px; height: 16px; fill: var(--accent-light); }
+    .map-active-pill {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px;
+      background: rgba(91,219,109,0.12);
+      color: #5BDB6D;
+      border: 1px solid rgba(91,219,109,0.3);
+      border-radius: 10px;
+    }
+    .map-active-pill::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: #5BDB6D;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #5BDB6D;
+    }
+
+    /* Recent activity list under map */
+    .recent-activity {
+      padding: 8px 0 12px;
+    }
+    .activity-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .activity-row:hover { background: rgba(255,255,255,0.03); }
+    .activity-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px; color: #fff;
+      border: 2px solid var(--card-border);
+      flex-shrink: 0;
+    }
+    .activity-info { flex: 1; }
+    .activity-name {
+      font-size: 13px; font-weight: 700;
+    }
+    .activity-loc {
+      font-size: 11px; color: rgba(255,255,255,0.4);
+      display: flex; align-items: center; gap: 4px;
+      margin-top: 2px;
+    }
+    .activity-loc svg { width: 10px; height: 10px; fill: rgba(255,255,255,0.4); }
+    .activity-time {
+      font-size: 10px; color: rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+
+    /* ── Maps Opt-In Banner ── */
+    .opt-in-banner {
+      margin: 12px 16px 0;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .opt-in-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .opt-in-icon svg { width: 18px; height: 18px; fill: #fff; }
+    .opt-in-text {
+      flex: 1;
+      font-size: 11px; color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+    .opt-in-text strong { color: var(--accent-light); display: block; font-size: 12px; }
+
+    /* Hide section by default */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── Bottom Nav ── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: space-around;
+      padding: 8px 12px 28px; z-index: 100;
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer; padding: 6px 12px; transition: color 0.2s;
+    }
+    .nav-item svg { width: 24px; height: 24px; fill: rgba(255,255,255,0.35); }
+    .nav-item span { font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 500; }
+    .nav-item.active svg { fill: var(--accent-light); }
+    .nav-item.active span { color: var(--accent-light); }
+    .nav-add {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: -24px; cursor: pointer;
+      box-shadow: 0 4px 20px var(--accent-glow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-add svg { width: 28px; height: 28px; fill: #fff; }
+
+    .bottom-spacer { height: 120px; }
+
+    ::-webkit-scrollbar { width: 0; }
+
+    @media (min-width: 500px) {
+      body {
+        border-left: 3px solid rgba(255,255,255,0.08);
+        border-right: 3px solid rgba(255,255,255,0.08);
+        box-shadow: 0 0 80px rgba(0,0,0,0.5);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-time">9:41</div>
+    <div class="status-icons">
+      <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.34C7 21.4 7.6 22 8.33 22h7.34c.73 0 1.33-.6 1.33-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    </div>
+  </div>
+
+  <!-- SESSN Logo -->
+  <div style="padding: 18px 20px 8px; text-align: center;">
+    <span style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 4px; background: linear-gradient(135deg, var(--accent-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">SESSN</span>
+  </div>
+
+  <!-- Main Tabs: Groups / Maps -->
+  <div class="main-tabs">
+    <button class="main-tab active" onclick="setView('groups')">
+      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      Groups
+    </button>
+    <button class="main-tab" onclick="setView('maps')">
+      <svg viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/></svg>
+      Maps
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════ -->
+  <!-- GROUPS VIEW                -->
+  <!-- ═══════════════════════════ -->
+  <div class="view active" id="view-groups">
+
+    <!-- Time Filter -->
+    <div class="section-header">
+      <h2>YOUR GROUPS</h2>
+    </div>
+    <div class="time-filter">
+      <button class="time-tab" onclick="setTime(this)">Weekly</button>
+      <button class="time-tab active" onclick="setTime(this)">Monthly</button>
+      <button class="time-tab" onclick="setTime(this)">All Time</button>
+    </div>
+
+    <!-- Group 1: Lift Crew -->
+    <div class="group-card">
+      <div class="group-header">
+        <div class="group-icon lift">&#127947;</div>
+        <div class="group-info">
+          <div class="group-name">Lift Crew</div>
+          <div class="group-meta">12 members &bull; Most lifts</div>
+        </div>
+        <div class="group-category">Lifts</div>
+      </div>
+      <div class="leaderboard">
+        <div class="leader-row">
+          <div class="leader-rank gold">1</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#FF6B9D,#C44DFF);">LK</div>
+          <div class="leader-info">
+            <div class="leader-name">lydiakoehler</div>
+            <div class="leader-detail">28 sessns this month</div>
+          </div>
+          <div class="leader-stat">142<span>k lbs</span></div>
+        </div>
+        <div class="leader-row">
+          <div class="leader-rank silver">2</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#5B8CFF,#5BDB6D);">DS</div>
+          <div class="leader-info">
+            <div class="leader-name">dschwartz42</div>
+            <div class="leader-detail">24 sessns this month</div>
+          </div>
+          <div class="leader-stat">128<span>k lbs</span></div>
+        </div>
+        <div class="leader-row you">
+          <div class="leader-rank bronze">3</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#635BFF,#8B85FF);">B</div>
+          <div class="leader-info">
+            <div class="leader-name">bradyepstein (you)</div>
+            <div class="leader-detail">22 sessns this month</div>
+          </div>
+          <div class="leader-stat">118<span>k lbs</span></div>
+        </div>
+        <div class="leader-row">
+          <div class="leader-rank">4</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#FFB85B,#FF8BA7);">MJ</div>
+          <div class="leader-info">
+            <div class="leader-name">mikejohnson_</div>
+            <div class="leader-detail">19 sessns this month</div>
+          </div>
+          <div class="leader-stat">98<span>k lbs</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group 2: Cardio Kings -->
+    <div class="group-card">
+      <div class="group-header">
+        <div class="group-icon cardio">&#127939;</div>
+        <div class="group-info">
+          <div class="group-name">Cardio Kings</div>
+          <div class="group-meta">8 members &bull; Longest time</div>
+        </div>
+        <div class="group-category" style="background: rgba(91,219,109,0.1); color: #5BDB6D; border-color: rgba(91,219,109,0.3);">Time</div>
+      </div>
+      <div class="leaderboard">
+        <div class="leader-row">
+          <div class="leader-rank gold">1</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#5BDB6D,#5BE8D5);">AR</div>
+          <div class="leader-info">
+            <div class="leader-name">arod.fitness</div>
+            <div class="leader-detail">16 cardio sessns</div>
+          </div>
+          <div class="leader-stat">14<span>hr</span></div>
+        </div>
+        <div class="leader-row">
+          <div class="leader-rank silver">2</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#FF6B9D,#C44DFF);">LK</div>
+          <div class="leader-info">
+            <div class="leader-name">lydiakoehler</div>
+            <div class="leader-detail">12 cardio sessns</div>
+          </div>
+          <div class="leader-stat">11<span>hr</span></div>
+        </div>
+        <div class="leader-row">
+          <div class="leader-rank bronze">3</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#FFB85B,#FF8BA7);">JP</div>
+          <div class="leader-info">
+            <div class="leader-name">jpark_lifts</div>
+            <div class="leader-detail">10 cardio sessns</div>
+          </div>
+          <div class="leader-stat">9<span>hr</span></div>
+        </div>
+        <div class="leader-row you">
+          <div class="leader-rank">7</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#635BFF,#8B85FF);">B</div>
+          <div class="leader-info">
+            <div class="leader-name">bradyepstein (you)</div>
+            <div class="leader-detail">5 cardio sessns</div>
+          </div>
+          <div class="leader-stat">4<span>hr</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group 3: Reno Lifters -->
+    <div class="group-card">
+      <div class="group-header">
+        <div class="group-icon crew">&#128293;</div>
+        <div class="group-info">
+          <div class="group-name">Reno Lifters</div>
+          <div class="group-meta">24 members &bull; Most sessns</div>
+        </div>
+        <div class="group-category" style="background: rgba(232,91,255,0.1); color: #E85BFF; border-color: rgba(232,91,255,0.3);">Streak</div>
+      </div>
+      <div class="leaderboard">
+        <div class="leader-row">
+          <div class="leader-rank gold">1</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#635BFF,#8B85FF);">B</div>
+          <div class="leader-info">
+            <div class="leader-name">bradyepstein (you)</div>
+            <div class="leader-detail">5 week streak &#128293;</div>
+          </div>
+          <div class="leader-stat">22<span>sessns</span></div>
+        </div>
+        <div class="leader-row">
+          <div class="leader-rank silver">2</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#FF6B9D,#C44DFF);">KW</div>
+          <div class="leader-info">
+            <div class="leader-name">kwilliams23</div>
+            <div class="leader-detail">4 week streak</div>
+          </div>
+          <div class="leader-stat">21<span>sessns</span></div>
+        </div>
+        <div class="leader-row">
+          <div class="leader-rank bronze">3</div>
+          <div class="leader-avatar" style="background: linear-gradient(135deg,#5B8CFF,#5BDB6D);">DS</div>
+          <div class="leader-info">
+            <div class="leader-name">dschwartz42</div>
+            <div class="leader-detail">3 week streak</div>
+          </div>
+          <div class="leader-stat">19<span>sessns</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-spacer"></div>
+  </div>
+
+  <!-- ═══════════════════════════ -->
+  <!-- MAPS VIEW                  -->
+  <!-- ═══════════════════════════ -->
+  <div class="view" id="view-maps">
+
+    <!-- Opt-in banner -->
+    <div class="opt-in-banner">
+      <div class="opt-in-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+      <div class="opt-in-text">
+        <strong>Location sharing on</strong>
+        See where your friends hit their last sessn. You can opt out anytime in settings.
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2>FRIENDS NEARBY</h2>
+    </div>
+
+    <div class="map-container">
+      <div class="map-bar">
+        <div class="map-bar-title">
+          <svg viewBox="0 0 24 24"><path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5z"/></svg>
+          Reno, NV
+        </div>
+        <div class="map-active-pill">7 active</div>
+      </div>
+
+      <div class="map-bg">
+        <!-- Map pin: Lydia at Strawberry Field -->
+        <div class="map-pin" style="top: 60px; left: 80px; background: linear-gradient(135deg,#FF6B9D,#C44DFF);">
+          <div class="avatar-pin" style="background: linear-gradient(135deg,#FF6B9D,#C44DFF);">LK</div>
+        </div>
+        <div class="map-label" style="top: 50px; left: 120px;">
+          <div class="map-label-name">lydiakoehler</div>
+          <div class="map-label-loc">Strawberry Field &bull; 32m ago</div>
+        </div>
+
+        <!-- Map pin: Dschwartz at Wells Ave YMCA -->
+        <div class="map-pin" style="top: 160px; left: 220px; background: linear-gradient(135deg,#5B8CFF,#5BDB6D);">
+          <div class="avatar-pin" style="background: linear-gradient(135deg,#5B8CFF,#5BDB6D);">DS</div>
+        </div>
+        <div class="map-label" style="top: 200px; left: 200px;">
+          <div class="map-label-name">dschwartz42</div>
+          <div class="map-label-loc">Wells Ave YMCA &bull; 1h ago</div>
+        </div>
+
+        <!-- Map pin: Mike Johnson at CrossFit Reno -->
+        <div class="map-pin" style="top: 250px; left: 60px; background: linear-gradient(135deg,#FFB85B,#FF8BA7);">
+          <div class="avatar-pin" style="background: linear-gradient(135deg,#FFB85B,#FF8BA7);">MJ</div>
+        </div>
+        <div class="map-label" style="top: 290px; left: 50px;">
+          <div class="map-label-name">mikejohnson_</div>
+          <div class="map-label-loc">CrossFit Reno &bull; 2h ago</div>
+        </div>
+
+        <!-- Map pin: You (Brady) at Nic Rec Center -->
+        <div class="map-pin" style="top: 110px; left: 280px; background: linear-gradient(135deg,#635BFF,#8B85FF); width: 42px; height: 42px;">
+          <div class="avatar-pin" style="background: linear-gradient(135deg,#635BFF,#8B85FF); width: 32px; height: 32px;">B</div>
+        </div>
+        <div class="map-label" style="top: 95px; left: 200px; background: var(--accent-soft); border-color: var(--accent-border);">
+          <div class="map-label-name" style="color: var(--accent-light);">you</div>
+          <div class="map-label-loc">Nic Rec Center &bull; now</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2>RECENT SESSNS</h2>
+    </div>
+
+    <div class="recent-activity" style="margin: 0 16px 16px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; overflow: hidden;">
+      <div class="activity-row">
+        <div class="activity-avatar" style="background: linear-gradient(135deg,#FF6B9D,#C44DFF);">LK</div>
+        <div class="activity-info">
+          <div class="activity-name">lydiakoehler</div>
+          <div class="activity-loc">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Strawberry Field
+          </div>
+        </div>
+        <div class="activity-time">32m</div>
+      </div>
+      <div class="activity-row">
+        <div class="activity-avatar" style="background: linear-gradient(135deg,#5B8CFF,#5BDB6D);">DS</div>
+        <div class="activity-info">
+          <div class="activity-name">dschwartz42</div>
+          <div class="activity-loc">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Wells Ave YMCA
+          </div>
+        </div>
+        <div class="activity-time">1h</div>
+      </div>
+      <div class="activity-row">
+        <div class="activity-avatar" style="background: linear-gradient(135deg,#FFB85B,#FF8BA7);">MJ</div>
+        <div class="activity-info">
+          <div class="activity-name">mikejohnson_</div>
+          <div class="activity-loc">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            CrossFit Reno
+          </div>
+        </div>
+        <div class="activity-time">2h</div>
+      </div>
+      <div class="activity-row">
+        <div class="activity-avatar" style="background: linear-gradient(135deg,#5BDB6D,#5BE8D5);">AR</div>
+        <div class="activity-info">
+          <div class="activity-name">arod.fitness</div>
+          <div class="activity-loc">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            Truckee River Trail
+          </div>
+        </div>
+        <div class="activity-time">3h</div>
+      </div>
+    </div>
+
+    <div class="bottom-spacer"></div>
+  </div>
+
+  <!-- Bottom Navigation — Friends active -->
+  <div class="bottom-nav">
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span>Search</span>
+    </div>
+    <div class="nav-add">
+      <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    </div>
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      <span>Friends</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profile</span>
+    </div>
+  </div>
+
+  <script>
+    function setView(view) {
+      document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelector(`.main-tab[onclick*="${view}"]`).classList.add('active');
+      document.getElementById(`view-${view}`).classList.add('active');
+    }
+
+    function setTime(btn) {
+      document.querySelectorAll('.time-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
