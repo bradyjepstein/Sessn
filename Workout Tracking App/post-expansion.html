@@ -107,18 +107,18 @@
     z-index: 3;
   }
   .post-avatar {
-    width: 36px; height: 36px; border-radius: 50%;
+    width: 30px; height: 30px; border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), var(--accent-light));
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 14px; color: #fff;
+    font-weight: 700; font-size: 12px; color: #fff;
     border: 2px solid rgba(255,255,255,0.2);
   }
   .post-user-info {}
   .post-username {
-    font-size: 14px; font-weight: 700; color: #fff;
+    font-size: 12px; font-weight: 700; color: #fff;
   }
   .post-date {
-    font-size: 11px; color: rgba(255,255,255,0.5);
+    font-size: 10px; color: rgba(255,255,255,0.5);
   }
 
   /* ── Location ── */
@@ -132,12 +132,12 @@
     border: 1px solid rgba(255,255,255,0.15);
     border-radius: 20px;
     padding: 6px 14px;
-    margin-bottom: 14px;
+    margin-bottom: 6px;
     width: fit-content;
   }
-  .location-pin { width: 14px; height: 14px; }
+  .location-pin { width: 11px; height: 11px; }
   .location-text {
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 500;
     color: rgba(255,255,255,0.85);
     letter-spacing: 0.5px;
@@ -146,57 +146,137 @@
   /* ── Workout Title ── */
   .workout-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px;
+    font-size: 30px;
     color: #fff;
     line-height: 0.95;
-    letter-spacing: 2px;
-    margin-bottom: 24px;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
     text-shadow: 0 2px 20px rgba(0,0,0,0.4);
   }
 
-  /* ── Stats Row ── */
-  .stats-row {
+  /* ── Title + Stats Row ── */
+  .title-stats-row {
     display: flex;
-    align-items: flex-start;
-    gap: 0;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
   }
-
-  .stat-block { flex: 1; }
-
-  .stat-block.heatmap-block {
-    flex: 1.2;
+  .title-col {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .stat-label {
-    font-size: 12px;
-    font-weight: 600;
+  .stat-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .stat-item-label {
+    font-size: 9px;
+    font-weight: 700;
     color: rgba(255,255,255,0.5);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+    text-align: right;
   }
-
-  .stat-value {
+  .stat-item-value {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 44px;
+    font-size: 26px;
     color: #fff;
     line-height: 1;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    text-align: right;
+  }
+  .stat-item-value span {
+    font-size: 14px;
+    opacity: 0.6;
+    margin-left: 2px;
+  }
+
+  /* Old stats-row (hidden) */
+  .stats-row {
+    display: none;
+  }
+
+  .info-chips-col { display: none; }
+
+  .stat-block { display: none; }
+  .stat-block.heatmap-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  /* Compact inline info chips */
+  .info-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 5px 10px;
+  }
+  .info-chip svg { width: 12px; height: 12px; fill: rgba(255,255,255,0.6); }
+  .info-chip-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.3px;
   }
 
   .heatmap-container {
     display: flex;
-    gap: 6px;
     align-items: flex-end;
+    position: relative;
   }
+  .heatmap-figure { display: none; }
 
-  .heatmap-figure {
-    width: 40px;
-    height: 96px;
+  .heatmap-wrap {
+    position: relative;
+    width: 110px;
+    line-height: 0;
   }
+  /* Base layer — white outlines on dark bg */
+  .heatmap-png {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: invert(1) saturate(0) brightness(1.6) contrast(1.4);
+    opacity: 0.85;
+  }
+  /* Red-tinted overlay clipped to specific muscle regions */
+  .heatmap-png-red {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: auto;
+    /* Push reds and yellows to bright red */
+    filter: brightness(0.85) saturate(3) hue-rotate(-15deg);
+    /* Multiply blend so the white background of the PNG disappears,
+       leaving only the colored muscle pixels visible */
+    mix-blend-mode: screen;
+    /* Show only the back-muscle area on the back body
+       and the biceps on the front body */
+    clip-path: url(#muscleHighlightClip);
+    pointer-events: none;
+  }
+  .stat-block.heatmap-block .stat-label {
+    display: block;
+    font-size: 8px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 4px;
+  }
+  .stat-label { display: none; }
+  .stat-value { display: none; }
 
   /* ── Bottom Actions ── */
   .bottom-actions {
@@ -234,6 +314,121 @@
   .save-btn:active { transform: scale(0.96); }
   .save-btn svg { width: 14px; height: 14px; fill: #fff; }
 
+  /* ── View Workout Details Button ── */
+  .view-details-hint {
+    text-align: center;
+    margin-top: 14px;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    font-size: 12px; font-weight: 600;
+    color: var(--accent-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .view-details-hint:hover {
+    background: rgba(99,91,255,0.15);
+    border-color: var(--accent-border);
+  }
+
+  /* ── Workout Details Drop-Up ── */
+  .details-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    z-index: 200;
+    display: none;
+  }
+  .details-backdrop.visible { display: block; }
+
+  .dropup-panel {
+    position: fixed;
+    bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
+    width: 100%; max-width: 430px;
+    background: #1a1a1a;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    z-index: 300;
+    padding: 0 0 32px;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+    max-height: 75vh;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+  }
+  .dropup-panel.visible {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .dropup-handle {
+    display: flex; justify-content: center; padding: 12px 0 4px;
+  }
+  .dropup-handle div {
+    width: 40px; height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+  }
+
+  .dropup-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 20px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .dropup-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px; letter-spacing: 1.5px;
+    color: #fff;
+  }
+  .dropup-subtitle {
+    font-size: 12px; color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+  }
+  .save-workout-btn {
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: #fff; background: var(--accent);
+    border: none; border-radius: 12px;
+    padding: 10px 20px; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    box-shadow: 0 2px 12px var(--accent-glow);
+    transition: background 0.2s, transform 0.15s;
+    flex-shrink: 0;
+  }
+  .save-workout-btn:hover { background: var(--accent-light); }
+  .save-workout-btn svg { width: 16px; height: 16px; fill: #fff; }
+
+  .exercise-list {
+    padding: 0 20px;
+  }
+  .exercise-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .exercise-item:last-child { border-bottom: none; }
+  .exercise-num {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px; color: var(--accent-light);
+    flex-shrink: 0;
+  }
+  .exercise-info { flex: 1; }
+  .exercise-name {
+    font-size: 14px; font-weight: 600; color: #fff;
+  }
+  .exercise-detail {
+    font-size: 12px; color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+  }
+  .exercise-weight {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; color: rgba(255,255,255,0.6);
+    flex-shrink: 0;
+  }
+
   @media (min-width: 500px) {
     body {
       border-left: 3px solid rgba(255,255,255,0.08);
@@ -269,85 +464,70 @@
       </div>
     </div>
 
-    <!-- Location -->
-    <div class="location">
-      <svg class="location-pin" viewBox="0 0 16 16" fill="none">
-        <path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z" fill="rgba(255,255,255,0.85)"/>
-      </svg>
-      <span class="location-text">Wells Ave YMCA</span>
-    </div>
+    <!-- Title row: location/title left, stats right -->
+    <div class="title-stats-row">
+      <div class="title-col">
+        <!-- Location -->
+        <div class="location">
+          <svg class="location-pin" viewBox="0 0 16 16" fill="none">
+            <path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <span class="location-text">Wells Ave YMCA</span>
+        </div>
+        <!-- Title -->
+        <div class="workout-title">Wednesday<br/>Pull Day</div>
+      </div>
 
-    <!-- Title -->
-    <div class="workout-title">Wednesday<br/>Pull Day</div>
+      <!-- Split + Time on right -->
+      <div class="stat-col">
+        <div>
+          <div class="stat-item-label">Split</div>
+          <div class="stat-item-value">Back & Bis</div>
+        </div>
+        <div>
+          <div class="stat-item-label">Time</div>
+          <div class="stat-item-value">55<span>MIN</span></div>
+        </div>
+      </div>
+    </div>
 
     <!-- Stats Row -->
     <div class="stats-row">
 
-      <!-- Column 1: Heatmap -->
-      <div class="stat-block heatmap-block">
-        <div class="stat-label">Muscles</div>
-        <div class="heatmap-container">
-
-          <!-- Front Body -->
-          <svg class="heatmap-figure" viewBox="0 0 100 230" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="50" cy="14" rx="9" ry="10" fill="rgba(255,255,255,0.15)"/>
-            <path d="M44 24 Q44 22 47 22 L53 22 Q56 22 56 24 L56 30 L44 30 Z" fill="rgba(255,255,255,0.12)"/>
-            <path d="M33 32 Q22 34 18 44 Q17 48 19 50 L28 48 L33 38 Z" fill="rgba(255,255,255,0.15)"/>
-            <path d="M67 32 Q78 34 82 44 Q83 48 81 50 L72 48 L67 38 Z" fill="rgba(255,255,255,0.15)"/>
-            <path d="M33 34 Q40 31 50 32 L50 50 Q42 52 33 48 Z" fill="rgba(255,255,255,0.13)"/>
-            <path d="M67 34 Q60 31 50 32 L50 50 Q58 52 67 48 Z" fill="rgba(255,255,255,0.13)"/>
-            <path d="M19 50 Q17 56 17 64 Q17 72 20 74 L27 72 L28 48 Z" fill="#E84855" opacity="0.85"/>
-            <path d="M81 50 Q83 56 83 64 Q83 72 80 74 L73 72 L72 48 Z" fill="#E84855" opacity="0.85"/>
-            <path d="M20 76 Q18 84 16 94 Q15 98 17 99 L24 97 L27 74 Z" fill="rgba(255,255,255,0.10)"/>
-            <path d="M80 76 Q82 84 84 94 Q85 98 83 99 L76 97 L73 74 Z" fill="rgba(255,255,255,0.10)"/>
-            <path d="M37 52 L37 88 Q37 92 42 94 L50 96 L58 94 Q63 92 63 88 L63 52 Q58 54 50 54 Q42 54 37 52 Z" fill="rgba(255,255,255,0.10)"/>
-            <path d="M36 98 Q34 118 34 138 Q34 148 37 150 L46 148 Q48 130 48 112 L48 98 Z" fill="rgba(255,255,255,0.13)"/>
-            <path d="M64 98 Q66 118 66 138 Q66 148 63 150 L54 148 Q52 130 52 112 L52 98 Z" fill="rgba(255,255,255,0.13)"/>
-            <path d="M37 154 Q36 170 36 182 Q36 190 38 192 L46 190 Q46 174 46 154 Z" fill="rgba(255,255,255,0.08)"/>
-            <path d="M63 154 Q64 170 64 182 Q64 190 62 192 L54 190 Q54 174 54 154 Z" fill="rgba(255,255,255,0.08)"/>
-            <ellipse cx="42" cy="196" rx="7" ry="3" fill="rgba(255,255,255,0.06)"/>
-            <ellipse cx="58" cy="196" rx="7" ry="3" fill="rgba(255,255,255,0.06)"/>
-          </svg>
-
-          <!-- Back Body -->
-          <svg class="heatmap-figure" viewBox="0 0 100 230" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="50" cy="14" rx="9" ry="10" fill="rgba(255,255,255,0.15)"/>
-            <path d="M45 24 L55 24 L55 30 L45 30 Z" fill="rgba(255,255,255,0.12)"/>
-            <path d="M30 28 L70 28 L68 36 L32 36 Z" fill="#E84855" opacity="0.78"/>
-            <path d="M30 29 L16 40 L15 47 L24 45 L30 36 Z" fill="#E84855" opacity="0.72"/>
-            <path d="M70 29 L84 40 L85 47 L76 45 L70 36 Z" fill="#E84855" opacity="0.72"/>
-            <path d="M30 36 L70 36 L66 56 L34 56 Z" fill="#E84855" opacity="0.82"/>
-            <path d="M34 56 L66 56 L56 80 L44 80 Z" fill="#FF3344" opacity="0.72"/>
-            <path d="M44 80 L56 80 L54 98 L46 98 Z" fill="#E84855" opacity="0.55"/>
-            <path d="M15 48 L13 64 L15 72 L23 70 L24 46 Z" fill="rgba(255,255,255,0.13)"/>
-            <path d="M85 48 L87 64 L85 72 L77 70 L76 46 Z" fill="rgba(255,255,255,0.13)"/>
-            <path d="M15 74 L12 92 L13 97 L20 95 L23 72 Z" fill="rgba(255,255,255,0.10)"/>
-            <path d="M85 74 L88 92 L87 97 L80 95 L77 72 Z" fill="rgba(255,255,255,0.10)"/>
-            <path d="M44 100 L56 100 L55 112 L45 112 Z" fill="rgba(255,255,255,0.10)"/>
-            <path d="M40 114 L48 114 L48 152 L40 154 Z" fill="rgba(255,255,255,0.12)"/>
-            <path d="M52 114 L60 114 L60 154 L52 152 Z" fill="rgba(255,255,255,0.12)"/>
-            <path d="M41 158 L47 158 L47 190 L41 192 Z" fill="rgba(255,255,255,0.08)"/>
-            <path d="M53 158 L59 158 L59 192 L53 190 Z" fill="rgba(255,255,255,0.08)"/>
-            <ellipse cx="44" cy="196" rx="6" ry="3" fill="rgba(255,255,255,0.06)"/>
-            <ellipse cx="56" cy="196" rx="6" ry="3" fill="rgba(255,255,255,0.06)"/>
-          </svg>
-
+      <!-- Compact info chips on left -->
+      <div class="info-chips-col">
+        <div class="info-chip">
+          <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>
+          <span class="info-chip-text">Back & Bis</span>
+        </div>
+        <div class="info-chip">
+          <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+          <span class="info-chip-text">55 min</span>
         </div>
       </div>
 
-      <!-- Column 2: Workout type -->
-      <div class="stat-block">
-        <div class="stat-label">Workout</div>
-        <div class="stat-value" style="font-size: 36px;">Back<br/>& Bis</div>
-      </div>
-
-      <!-- Column 3: Date stacked above Time -->
-      <div class="stat-block">
-        <div class="stat-label">Date</div>
-        <div class="stat-value" style="font-size: 32px;">5/24/25</div>
-        <div style="margin-top: 16px;">
-          <div class="stat-label">Time</div>
-          <div class="stat-value">55<span style="font-size: 24px; opacity: 0.7;">min</span></div>
+      <!-- Heatmap on right -->
+      <div class="stat-block heatmap-block">
+        <div class="stat-label">Muscles</div>
+        <div class="heatmap-container">
+          <div class="heatmap-wrap">
+            <!-- SVG clip-path definition (multiple rectangles defining bicep + back regions) -->
+            <svg width="0" height="0" style="position:absolute">
+              <defs>
+                <clipPath id="muscleHighlightClip" clipPathUnits="objectBoundingBox">
+                  <!-- Front body left bicep (narrow band on upper arm) -->
+                  <rect x="0.128" y="0.30" width="0.052" height="0.17"/>
+                  <!-- Front body right bicep -->
+                  <rect x="0.355" y="0.30" width="0.052" height="0.17"/>
+                  <!-- Back body upper back: traps, delts, lats, mid-back ONLY
+                       (avoiding head, arms, glutes, hamstrings) -->
+                  <rect x="0.555" y="0.16" width="0.305" height="0.34"/>
+                </clipPath>
+              </defs>
+            </svg>
+            <img class="heatmap-png" src="Images/muscle heat map.png" alt="Muscle heatmap" />
+            <img class="heatmap-png-red" src="Images/muscle heat map.png" alt="" aria-hidden="true" />
+          </div>
         </div>
       </div>
 
@@ -363,6 +543,9 @@
         <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
         <span>5</span>
       </button>
+      <button class="action-btn" onclick="toggleAction(this)">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
       <div class="action-spacer"></div>
       <button class="save-btn" onclick="toggleSave(this)">
         <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
@@ -370,6 +553,77 @@
       </button>
     </div>
 
+    <!-- View Workout Details -->
+    <div class="view-details-hint" onclick="openDetails()">View workout details &#9650;</div>
+
+  </div>
+</div>
+
+<!-- ── Workout Details Drop-Up ── -->
+<div class="details-backdrop" onclick="closeDetails()"></div>
+<div class="dropup-panel">
+  <div class="dropup-handle"><div></div></div>
+
+  <div class="dropup-header">
+    <div>
+      <div class="dropup-title">WEDNESDAY PULL DAY</div>
+      <div class="dropup-subtitle">Back & Bis &bull; 55 min &bull; 6 exercises</div>
+    </div>
+    <button class="save-workout-btn" onclick="toggleSaveWorkout(this)">
+      <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
+      Save
+    </button>
+  </div>
+
+  <div class="exercise-list">
+    <div class="exercise-item">
+      <div class="exercise-num">1</div>
+      <div class="exercise-info">
+        <div class="exercise-name">Barbell Rows</div>
+        <div class="exercise-detail">4 sets &times; 10 reps</div>
+      </div>
+      <div class="exercise-weight">135 LB</div>
+    </div>
+    <div class="exercise-item">
+      <div class="exercise-num">2</div>
+      <div class="exercise-info">
+        <div class="exercise-name">Lat Pulldowns</div>
+        <div class="exercise-detail">4 sets &times; 12 reps</div>
+      </div>
+      <div class="exercise-weight">120 LB</div>
+    </div>
+    <div class="exercise-item">
+      <div class="exercise-num">3</div>
+      <div class="exercise-info">
+        <div class="exercise-name">Seated Cable Rows</div>
+        <div class="exercise-detail">3 sets &times; 12 reps</div>
+      </div>
+      <div class="exercise-weight">110 LB</div>
+    </div>
+    <div class="exercise-item">
+      <div class="exercise-num">4</div>
+      <div class="exercise-info">
+        <div class="exercise-name">Face Pulls</div>
+        <div class="exercise-detail">3 sets &times; 15 reps</div>
+      </div>
+      <div class="exercise-weight">40 LB</div>
+    </div>
+    <div class="exercise-item">
+      <div class="exercise-num">5</div>
+      <div class="exercise-info">
+        <div class="exercise-name">Dumbbell Curls</div>
+        <div class="exercise-detail">3 sets &times; 12 reps</div>
+      </div>
+      <div class="exercise-weight">30 LB</div>
+    </div>
+    <div class="exercise-item">
+      <div class="exercise-num">6</div>
+      <div class="exercise-info">
+        <div class="exercise-name">Hammer Curls</div>
+        <div class="exercise-detail">3 sets &times; 10 reps</div>
+      </div>
+      <div class="exercise-weight">25 LB</div>
+    </div>
   </div>
 </div>
 
@@ -391,6 +645,33 @@
   function toggleAction(btn) {
     btn.classList.toggle('active');
     btn.style.color = btn.classList.contains('active') ? 'var(--accent-light)' : '';
+  }
+
+  function openDetails() {
+    document.querySelector('.details-backdrop').classList.add('visible');
+    document.querySelector('.dropup-panel').classList.add('visible');
+  }
+
+  function closeDetails() {
+    document.querySelector('.details-backdrop').classList.remove('visible');
+    document.querySelector('.dropup-panel').classList.remove('visible');
+  }
+
+  function toggleSaveWorkout(btn) {
+    btn.classList.toggle('saved');
+    if (btn.classList.contains('saved')) {
+      btn.style.background = 'transparent';
+      btn.style.border = '1px solid var(--accent-border)';
+      btn.style.color = 'var(--accent-light)';
+      btn.style.boxShadow = 'none';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" style="fill:var(--accent-light)"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg> Saved';
+    } else {
+      btn.style.background = '';
+      btn.style.border = '';
+      btn.style.color = '';
+      btn.style.boxShadow = '';
+      btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg> Save';
+    }
   }
 
   function toggleSave(btn) {
