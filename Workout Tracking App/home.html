@@ -194,6 +194,9 @@
     .card-action svg { width: 20px; height: 20px; fill: currentColor; }
     .card-action.liked { color: #FF4D6A; }
     .card-action.liked svg { fill: #FF4D6A; }
+    .card-action.save-action { margin-left: auto; }
+    .card-action.save-action.saved { color: var(--accent-light); }
+    .card-action.save-action.saved svg { fill: var(--accent-light); }
 
     .card-caption {
       padding: 10px 16px 0; font-size: 13px;
@@ -270,7 +273,7 @@
       </div>
     </div>
     <div class="top-header-right">
-      <div class="header-icon">
+      <div class="header-icon" onclick="location.href='notifications.html'">
         <svg viewBox="0 0 24 24"><path d="M15 17H20L18.595 15.595C18.4063 15.4063 18.2567 15.1822 18.1546 14.9357C18.0525 14.6891 18 14.4249 18 14.158V11C18.0002 9.75894 17.6156 8.54834 16.8992 7.53489C16.1828 6.52144 15.1698 5.75496 14 5.341V5C14 4.46957 13.7893 3.96086 13.4142 3.58579C13.0391 3.21071 12.5304 3 12 3C11.4696 3 10.9609 3.21071 10.5858 3.58579C10.2107 3.96086 10 4.46957 10 5V5.341C7.67 6.165 6 8.388 6 11V14.159C6 14.697 5.786 15.214 5.405 15.596L4 17H9M15 17V18C15 18.7956 14.6839 19.5587 14.1213 20.1213C13.5587 20.6839 12.7956 21 12 21C11.2044 21 10.4413 20.6839 9.87868 20.1213C9.31607 19.5587 9 18.7956 9 18V17M15 17H9"/></svg>
         <div class="notif-dot"></div>
       </div>
@@ -306,7 +309,7 @@
   <div class="feed">
 
     <!-- Card 1 — Post Thanksgiving Workout -->
-    <div class="workout-card">
+    <div class="workout-card" onclick="location.href='post-expansion.html'">
       <div class="card-image">
         <img src="Images/post-thanksgiving.jpg" alt="Post Thanksgiving Workout" style="object-position: center 30%;">
         <div class="card-location">&#128205; Strawberry Field</div>
@@ -324,21 +327,27 @@
         </div>
       </div>
       <div class="card-actions">
-        <button class="card-action liked" onclick="toggleLike(this)">
+        <button class="card-action liked" onclick="event.stopPropagation();toggleLike(this)">
           <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
           <span>24</span>
         </button>
-        <button class="card-action" onclick="toggleAction(this)">
+        <button class="card-action" onclick="event.stopPropagation();toggleAction(this)">
           <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
           <span>8</span>
         </button>
+        <button class="card-action" onclick="event.stopPropagation();location.href='share home.html'">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+        <button class="card-action save-action" onclick="event.stopPropagation();toggleSave(this)">
+          <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
+        </button>
       </div>
       <div class="card-caption"><strong>bradyepstein</strong> Burning off that turkey. No days off.</div>
-      <div class="card-tap-hint">Tap to see workout details &rsaquo;</div>
+      <div class="card-tap-hint" onclick="event.stopPropagation();location.href='workout-details.html'">Tap to see workout details &rsaquo;</div>
     </div>
 
     <!-- Card 2 — Pull Day (back mirror selfie) -->
-    <div class="workout-card">
+    <div class="workout-card" onclick="location.href='post-expansion.html'">
       <div class="card-image">
         <img src="Images/pull-day.jpg" alt="Wednesday Pull Day" style="object-position: center 55%;">
         <div class="card-location">&#128205; Wells Ave YMCA</div>
@@ -356,27 +365,33 @@
         </div>
       </div>
       <div class="card-actions">
-        <button class="card-action" onclick="toggleLike(this)">
+        <button class="card-action" onclick="event.stopPropagation();toggleLike(this)">
           <svg viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
           <span>31</span>
         </button>
-        <button class="card-action" onclick="toggleAction(this)">
+        <button class="card-action" onclick="event.stopPropagation();toggleAction(this)">
           <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
           <span>5</span>
         </button>
+        <button class="card-action" onclick="event.stopPropagation();location.href='share home.html'">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+        <button class="card-action save-action" onclick="event.stopPropagation();toggleSave(this)">
+          <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
+        </button>
       </div>
       <div class="card-caption"><strong>bradyepstein</strong> Back is getting wide. Trust the process.</div>
-      <div class="card-tap-hint">Tap to see workout details &rsaquo;</div>
+      <div class="card-tap-hint" onclick="event.stopPropagation();location.href='workout-details.html'">Tap to see workout details &rsaquo;</div>
     </div>
 
     <!-- Card 3 — Leg Day (gym mirror selfie) -->
-    <div class="workout-card">
+    <div class="workout-card" onclick="location.href='post-expansion.html'">
       <div class="card-image">
         <img src="Images/leg-day.jpg" alt="Friday Leg Day" style="object-position: center 15%;">
         <div class="card-location">&#128205; Nic Rec Center</div>
         <div class="card-workout-title">FRIDAY LEG DAY</div>
       </div>
-      <div class="card-username-row"><span>lydiakoehler <button class="follow-btn" onclick="toggleFollow(this)">Follow</button></span><span class="card-username-date">3/12/26</span></div>
+      <div class="card-username-row"><span><a href="other-profile.html" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;">lydiakoehler</a> <button class="follow-btn" onclick="event.stopPropagation();toggleFollow(this)">Follow</button></span><span class="card-username-date">3/12/26</span></div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">Split</div>
@@ -388,39 +403,45 @@
         </div>
       </div>
       <div class="card-actions">
-        <button class="card-action" onclick="toggleLike(this)">
+        <button class="card-action" onclick="event.stopPropagation();toggleLike(this)">
           <svg viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
           <span>18</span>
         </button>
-        <button class="card-action" onclick="toggleAction(this)">
+        <button class="card-action" onclick="event.stopPropagation();toggleAction(this)">
           <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
           <span>3</span>
         </button>
+        <button class="card-action" onclick="event.stopPropagation();location.href='share home.html'">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+        <button class="card-action save-action" onclick="event.stopPropagation();toggleSave(this)">
+          <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
+        </button>
       </div>
       <div class="card-caption"><strong>lydiakoehler</strong> Glute pump was unreal today.</div>
-      <div class="card-tap-hint">Tap to see workout details &rsaquo;</div>
+      <div class="card-tap-hint" onclick="event.stopPropagation();location.href='workout-details.html'">Tap to see workout details &rsaquo;</div>
     </div>
 
   </div>
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav">
-    <div class="nav-item active">
+    <div class="nav-item active" onclick="location.href='home.html'">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       <span>Home</span>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="location.href='search.html'">
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
       <span>Search</span>
     </div>
-    <div class="nav-add">
+    <div class="nav-add" onclick="location.href='independent post 1.html'">
       <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="location.href='friends leaderboard.html'">
       <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-      <span>Friends</span>
+      <span>Community</span>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" onclick="location.href='profile.html'">
       <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       <span>Profile</span>
     </div>
