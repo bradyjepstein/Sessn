@@ -62,6 +62,24 @@
       fill: rgba(255,255,255,0.35);
       flex-shrink: 0;
     }
+    .search-filter-select {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Barlow', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-light);
+      cursor: pointer;
+      padding-right: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      flex-shrink: 0;
+    }
+    .search-filter-select option {
+      background: #1a1a1a;
+      color: #fff;
+    }
     .search-bar input {
       flex: 1;
       background: none; border: none; outline: none;
@@ -164,29 +182,34 @@
       font-size: 11px; color: rgba(255,255,255,0.4);
     }
 
-    /* ── Recent Searches ── */
+    /* ── Search Dropdown (Recent Searches) ── */
+    .search-dropdown {
+      margin: 0 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
     .recent-list {
-      padding: 0 16px 8px;
+      padding: 4px 0;
       display: flex; flex-direction: column;
     }
     .recent-item {
       display: flex; align-items: center; gap: 14px;
-      padding: 12px 4px;
-      border-bottom: 1px solid var(--card-border);
+      padding: 11px 16px;
       cursor: pointer;
       transition: background 0.15s;
-      border-radius: 8px;
     }
-    .recent-item:hover { background: rgba(255,255,255,0.03); }
-    .recent-item:last-child { border-bottom: none; }
+    .recent-item:hover { background: rgba(255,255,255,0.04); }
     .recent-icon {
-      width: 40px; height: 40px;
-      border-radius: 12px;
+      width: 36px; height: 36px;
+      border-radius: 10px;
       background: rgba(255,255,255,0.06);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
-    .recent-icon svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.4); }
+    .recent-icon svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.35); }
     .recent-text { flex: 1; }
     .recent-text strong {
       display: block; font-size: 14px; font-weight: 600; color: #fff;
@@ -194,12 +217,6 @@
     .recent-text span {
       font-size: 12px; color: rgba(255,255,255,0.35);
     }
-    .recent-remove {
-      background: none; border: none; cursor: pointer;
-      padding: 4px;
-    }
-    .recent-remove svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.2); }
-    .recent-remove:hover svg { fill: rgba(255,255,255,0.5); }
 
     /* ── Popular Splits ── */
     .splits-grid {
@@ -288,6 +305,14 @@
   <div class="search-container">
     <div class="search-bar">
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <select class="search-filter-select">
+        <option>All</option>
+        <option>People</option>
+        <option>Workouts</option>
+        <option>Groups</option>
+        <option>Muscles</option>
+        <option>Classes</option>
+      </select>
       <input type="text" placeholder="Search workouts, people, splits..." autofocus>
       <button class="clear-btn" onclick="clearSearch()">
         <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
@@ -295,112 +320,54 @@
     </div>
   </div>
 
-  <!-- Filter Chips -->
-  <div class="filter-chips">
-    <div class="chip active" onclick="setChip(this)">People</div>
-    <div class="chip" onclick="setChip(this)">Workouts</div>
-    <div class="chip" onclick="setChip(this)">Groups</div>
-    <div class="chip" onclick="setChip(this)">Muscles</div>
-    <div class="chip" onclick="setChip(this)">Classes</div>
-  </div>
-
-  <!-- Trending Workouts -->
-  <div class="section-header">
-    <h2>TRENDING</h2>
-    <span class="see-all">See all</span>
-  </div>
-  <div class="trending-scroll">
-    <div class="trending-card">
-      <img class="trending-img" src="Images/post-thanksgiving.jpg" alt="Push Day" style="object-position: center 30%;">
-      <div class="trending-info">
-        <div class="trending-title">PUSH DAY PUMP</div>
-        <div class="trending-meta">1.2k saves this week</div>
+  <!-- Recent Searches Dropdown -->
+  <div class="search-dropdown">
+    <div class="recent-list">
+      <div class="recent-item">
+        <div class="recent-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 3C8.03 3 4 7.03 4 12H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+        </div>
+        <div class="recent-text">
+          <strong>Push Pull Legs</strong>
+          <span>Split</span>
+        </div>
       </div>
-    </div>
-    <div class="trending-card">
-      <img class="trending-img" src="Images/pull-day.jpg" alt="Pull Day" style="object-position: center 55%;">
-      <div class="trending-info">
-        <div class="trending-title">BACK DESTROYER</div>
-        <div class="trending-meta">980 saves this week</div>
+      <div class="recent-item">
+        <div class="recent-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
+        <div class="recent-text">
+          <strong>lydiakoehler</strong>
+          <span>Person</span>
+        </div>
       </div>
-    </div>
-    <div class="trending-card">
-      <img class="trending-img" src="Images/leg-day.jpg" alt="Leg Day" style="object-position: center 15%;">
-      <div class="trending-info">
-        <div class="trending-title">LEG DAY BURNER</div>
-        <div class="trending-meta">870 saves this week</div>
+      <div class="recent-item">
+        <div class="recent-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 3C8.03 3 4 7.03 4 12H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+        </div>
+        <div class="recent-text">
+          <strong>Chest & Triceps</strong>
+          <span>Split</span>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Recent Searches -->
-  <div class="section-header">
-    <h2>RECENT SEARCHES</h2>
-    <span class="see-all" onclick="clearAllRecent()">Clear all</span>
-  </div>
-  <div class="recent-list">
-    <div class="recent-item">
-      <div class="recent-icon">
-        <svg viewBox="0 0 24 24"><path d="M13 3C8.03 3 4 7.03 4 12H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+      <div class="recent-item">
+        <div class="recent-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        </div>
+        <div class="recent-text">
+          <strong>CrossFit Reno</strong>
+          <span>Group</span>
+        </div>
       </div>
-      <div class="recent-text">
-        <strong>Push Pull Legs</strong>
-        <span>Split</span>
+      <div class="recent-item">
+        <div class="recent-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 3C8.03 3 4 7.03 4 12H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+        </div>
+        <div class="recent-text">
+          <strong>Back & Biceps</strong>
+          <span>Workout</span>
+        </div>
       </div>
-      <button class="recent-remove" onclick="this.parentElement.remove()">
-        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-      </button>
-    </div>
-    <div class="recent-item">
-      <div class="recent-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-      </div>
-      <div class="recent-text">
-        <strong>lydiakoehler</strong>
-        <span>Person</span>
-      </div>
-      <button class="recent-remove" onclick="this.parentElement.remove()">
-        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-      </button>
-    </div>
-    <div class="recent-item">
-      <div class="recent-icon">
-        <svg viewBox="0 0 24 24"><path d="M13 3C8.03 3 4 7.03 4 12H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-      </div>
-      <div class="recent-text">
-        <strong>Chest & Triceps</strong>
-        <span>Split</span>
-      </div>
-      <button class="recent-remove" onclick="this.parentElement.remove()">
-        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- Popular Splits -->
-  <div class="section-header">
-    <h2>POPULAR SPLITS</h2>
-  </div>
-  <div class="splits-grid">
-    <div class="split-card">
-      <div class="split-emoji">&#128170;</div>
-      <div class="split-name">CHEST & TRIS</div>
-      <div class="split-count">4.2k workouts</div>
-    </div>
-    <div class="split-card">
-      <div class="split-emoji">&#129470;</div>
-      <div class="split-name">BACK & BIS</div>
-      <div class="split-count">3.8k workouts</div>
-    </div>
-    <div class="split-card">
-      <div class="split-emoji">&#129461;</div>
-      <div class="split-name">LEG DAY</div>
-      <div class="split-count">3.1k workouts</div>
-    </div>
-    <div class="split-card">
-      <div class="split-emoji">🧘</div>
-      <div class="split-name">YOGA</div>
-      <div class="split-count">2.7k workouts</div>
     </div>
   </div>
 
@@ -431,11 +398,6 @@
     function clearSearch() {
       document.querySelector('.search-bar input').value = '';
       document.querySelector('.search-bar input').focus();
-    }
-
-    function setChip(el) {
-      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
     }
 
     function clearAllRecent() {

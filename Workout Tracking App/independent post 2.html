@@ -399,6 +399,102 @@
       color: var(--cardio);
     }
 
+    /* ── Cardio Toggle Section ── */
+    .cardio-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px 14px;
+    }
+    .cardio-toggle-label {
+      font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.6);
+    }
+    .toggle-track-cardio {
+      width: 44px; height: 24px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.12);
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .toggle-track-cardio.on { background: var(--cardio); }
+    .toggle-knob-cardio {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 2px; left: 2px;
+      transition: left 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .toggle-track-cardio.on .toggle-knob-cardio { left: 22px; }
+    .cardio-box {
+      margin: 0 16px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: none;
+    }
+    .cardio-box.visible { display: block; }
+    .cardio-badge-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      background: var(--cardio-soft);
+      color: var(--cardio);
+      border: 1px solid var(--cardio-border);
+      margin-bottom: 12px;
+    }
+    .cardio-duration-field {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .cardio-timing {
+      display: flex; gap: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .cardio-timing-option {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none; background: none;
+    }
+    .cardio-timing-option.active {
+      background: var(--cardio);
+      color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(91,219,109,0.3);
+    }
+    .cardio-instructions {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px; font-weight: 500;
+      color: #fff;
+      resize: none;
+      min-height: 48px;
+      outline: none;
+    }
+    .cardio-instructions::placeholder { color: rgba(255,255,255,0.15); }
+
     .cardio-detail-row {
       display: flex; gap: 10px;
       padding: 0 16px 16px;
@@ -568,16 +664,6 @@
     <div class="header-spacer"></div>
   </div>
 
-  <!-- Step Indicator (Step 7 of 7 — final) -->
-  <div class="step-indicator">
-    <div class="step-dot done"></div>
-    <div class="step-dot done"></div>
-    <div class="step-dot done"></div>
-    <div class="step-dot done"></div>
-    <div class="step-dot done"></div>
-    <div class="step-dot done"></div>
-    <div class="step-dot active"></div>
-  </div>
 
   <!-- ═══════════════════════════════ -->
   <!-- LIFTING SECTION                -->
@@ -775,42 +861,42 @@
   </div>
 
   <!-- ═══════════════════════════════ -->
-  <!-- CARDIO SECTION                 -->
+  <!-- CARDIO TOGGLE SECTION          -->
   <!-- ═══════════════════════════════ -->
-  <div class="detail-section">
-    <div class="detail-section-header">
-      <span class="badge cardio">&#127939; Cardio</span>
+  <div class="cardio-toggle-row">
+    <span class="cardio-toggle-label">Include Cardio</span>
+    <div id="cardioToggle" class="toggle-track-cardio" onclick="toggleCardio(this)">
+      <div class="toggle-knob-cardio"></div>
     </div>
+  </div>
+  <div class="cardio-box" id="cardioBox">
+    <div class="cardio-badge-tag">CARDIO</div>
 
-    <!-- Cardio Type Checklist -->
-    <div style="padding: 0 16px 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Type</div>
-    <div class="cardio-type-grid">
-      <div class="cardio-chip selected" onclick="this.classList.toggle('selected')">Running</div>
+    <div style="padding: 0 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Type</div>
+    <div class="cardio-type-grid" style="padding: 0 0 16px;">
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Running</div>
       <div class="cardio-chip" onclick="this.classList.toggle('selected')">Cycling</div>
       <div class="cardio-chip" onclick="this.classList.toggle('selected')">Swimming</div>
       <div class="cardio-chip" onclick="this.classList.toggle('selected')">Rowing</div>
-      <div class="cardio-chip selected" onclick="this.classList.toggle('selected')">Stairmaster</div>
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Stairmaster</div>
       <div class="cardio-chip" onclick="this.classList.toggle('selected')">Elliptical</div>
       <div class="cardio-chip" onclick="this.classList.toggle('selected')">Jump Rope</div>
       <div class="cardio-chip" onclick="this.classList.toggle('selected')">Walking</div>
     </div>
 
-    <!-- Cardio Details -->
-    <div style="padding: 0 16px 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Details</div>
-    <div class="cardio-detail-row">
-      <div class="cardio-field">
-        <div class="cardio-field-label">Duration</div>
-        <input class="cardio-field-input" type="text" placeholder="e.g. 20 min" value="15 min">
-      </div>
-      <div class="cardio-field">
-        <div class="cardio-field-label">Distance</div>
-        <input class="cardio-field-input" type="text" placeholder="e.g. 2 mi">
-      </div>
-      <div class="cardio-field">
-        <div class="cardio-field-label">Calories</div>
-        <input class="cardio-field-input" type="text" placeholder="e.g. 200">
-      </div>
+    <div style="padding: 0 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Duration</div>
+    <div class="cardio-duration-field">
+      <input class="cardio-field-input" type="text" placeholder="e.g. 15 min">
     </div>
+
+    <div style="padding: 12px 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Before or After Workout</div>
+    <div class="cardio-timing">
+      <button class="cardio-timing-option active" onclick="setCardioTiming(this)">Before</button>
+      <button class="cardio-timing-option" onclick="setCardioTiming(this)">After</button>
+    </div>
+
+    <div style="padding: 12px 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Optional Cardio Instructions</div>
+    <textarea class="cardio-instructions" placeholder="e.g. HIIT intervals, steady state, incline walk..."></textarea>
   </div>
 
   <!-- Instructions Toggle -->
@@ -966,6 +1052,16 @@
         toggle.style.background = 'rgba(255,255,255,0.12)';
         knob.style.left = '2px';
       }
+    }
+
+    function toggleCardio(track) {
+      track.classList.toggle('on');
+      document.getElementById('cardioBox').classList.toggle('visible');
+    }
+
+    function setCardioTiming(btn) {
+      document.querySelectorAll('.cardio-timing-option').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
     }
   </script>
 

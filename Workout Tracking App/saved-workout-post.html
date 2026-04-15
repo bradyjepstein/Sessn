@@ -112,6 +112,29 @@
     .instructions-input { width: 100%; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500; color: #fff; resize: none; min-height: 48px; }
     .instructions-input::placeholder { color: rgba(255,255,255,0.15); }
 
+    /* Cardio Toggle */
+    .cardio-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 0 16px 14px; }
+    .cardio-toggle-label { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); }
+    .toggle-track-cardio { width: 44px; height: 24px; border-radius: 12px; background: rgba(255,255,255,0.12); cursor: pointer; position: relative; transition: background 0.2s; }
+    .toggle-track-cardio.on { background: #5BDB6D; }
+    .toggle-knob-cardio { width: 20px; height: 20px; border-radius: 50%; background: #fff; position: absolute; top: 2px; left: 2px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+    .toggle-track-cardio.on .toggle-knob-cardio { left: 22px; }
+    .cardio-box { margin: 0 16px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 16px; display: none; }
+    .cardio-box.visible { display: block; }
+    .cardio-badge-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.8px; background: rgba(91,219,109,0.1); color: #5BDB6D; border: 1px solid rgba(91,219,109,0.3); margin-bottom: 12px; }
+    .cardio-chip { padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.2s; }
+    .cardio-chip:hover { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+    .cardio-chip.selected { background: rgba(91,219,109,0.1); border-color: rgba(91,219,109,0.3); color: #5BDB6D; }
+    .cardio-type-grid { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 0 16px; }
+    .cardio-duration-field { background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; }
+    .cardio-field-input { width: 100%; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 600; color: #fff; }
+    .cardio-field-input::placeholder { color: rgba(255,255,255,0.15); }
+    .cardio-timing { display: flex; gap: 0; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; overflow: hidden; }
+    .cardio-timing-option { flex: 1; padding: 10px 0; text-align: center; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.2s; border: none; background: none; }
+    .cardio-timing-option.active { background: #5BDB6D; color: #fff; border-radius: 10px; box-shadow: 0 2px 12px rgba(91,219,109,0.3); }
+    .cardio-instructions { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500; color: #fff; resize: none; min-height: 48px; outline: none; }
+    .cardio-instructions::placeholder { color: rgba(255,255,255,0.15); }
+
     /* Tag Users */
     .tag-section { margin: 0 16px 16px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 16px; }
     .tag-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); margin-bottom: 6px; }
@@ -330,6 +353,43 @@
     </button>
   </div>
 
+  <!-- Cardio Toggle -->
+  <div class="cardio-toggle-row">
+    <span class="cardio-toggle-label">Include Cardio</span>
+    <div id="cardioToggle" class="toggle-track-cardio" onclick="toggleCardio(this)">
+      <div class="toggle-knob-cardio"></div>
+    </div>
+  </div>
+  <div class="cardio-box" id="cardioBox">
+    <div class="cardio-badge-tag">CARDIO</div>
+
+    <div style="padding: 0 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Type</div>
+    <div class="cardio-type-grid">
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Running</div>
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Cycling</div>
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Swimming</div>
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Rowing</div>
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Stairmaster</div>
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Elliptical</div>
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Jump Rope</div>
+      <div class="cardio-chip" onclick="this.classList.toggle('selected')">Walking</div>
+    </div>
+
+    <div style="padding: 0 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Duration</div>
+    <div class="cardio-duration-field">
+      <input class="cardio-field-input" type="text" placeholder="e.g. 15 min">
+    </div>
+
+    <div style="padding: 12px 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Before or After Workout</div>
+    <div class="cardio-timing">
+      <button class="cardio-timing-option active" onclick="setCardioTiming(this)">Before</button>
+      <button class="cardio-timing-option" onclick="setCardioTiming(this)">After</button>
+    </div>
+
+    <div style="padding: 12px 0 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: rgba(255,255,255,0.3);">Optional Cardio Instructions</div>
+    <textarea class="cardio-instructions" placeholder="e.g. HIIT intervals, steady state, incline walk..."></textarea>
+  </div>
+
   <!-- Instructions Toggle -->
   <div class="instructions-row">
     <span class="instructions-label">Include Instructions</span>
@@ -372,6 +432,16 @@
     function toggleInstructions(track) {
       track.classList.toggle('on');
       document.getElementById('instructionsBox').classList.toggle('visible');
+    }
+
+    function toggleCardio(track) {
+      track.classList.toggle('on');
+      document.getElementById('cardioBox').classList.toggle('visible');
+    }
+
+    function setCardioTiming(btn) {
+      document.querySelectorAll('.cardio-timing-option').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
     }
 
     function toggleBW(chip) {
