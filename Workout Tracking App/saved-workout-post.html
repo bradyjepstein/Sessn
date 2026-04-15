@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Sessn — Saved Workout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { font-family: 'Barlow', sans-serif; background: #0a0a0a; color: #fff; -webkit-font-smoothing: antialiased; max-width: 430px; margin: 0 auto; min-height: 100vh; position: relative; overflow-x: hidden; }
+    :root { --accent: #635BFF; --accent-light: #8B85FF; --accent-glow: rgba(99,91,255,0.35); --accent-soft: rgba(99,91,255,0.12); --accent-border: rgba(99,91,255,0.25); --card-bg: #151515; --card-border: rgba(255,255,255,0.06); --lifting: #5B8CFF; --lifting-soft: rgba(91,140,255,0.1); --lifting-border: rgba(91,140,255,0.3); }
+
+    .status-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px 0; font-size: 12px; font-weight: 600; }
+    .status-time { font-size: 15px; font-weight: 700; }
+    .status-icons { display: flex; gap: 6px; align-items: center; }
+    .status-icons svg { width: 16px; height: 16px; fill: #fff; }
+    .top-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px 8px; }
+    .back-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; border: none; }
+    .back-btn:hover { background: rgba(255,255,255,0.1); }
+    .back-btn svg { width: 20px; height: 20px; fill: rgba(255,255,255,0.7); }
+    .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1.5px; }
+    .header-spacer { width: 40px; }
+
+    .saved-badge { margin: 8px 16px 0; padding: 10px 14px; background: linear-gradient(135deg, rgba(255,217,61,0.1), rgba(255,140,66,0.06)); border: 1px solid rgba(255,217,61,0.3); border-radius: 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: rgba(255,255,255,0.6); }
+    .saved-badge svg { width: 16px; height: 16px; fill: #FFD93D; flex-shrink: 0; }
+    .saved-badge strong { color: #FFD93D; }
+
+    .section-label { padding: 16px 20px 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); }
+
+    /* Muscle groups */
+    .muscle-grid { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 16px; }
+    .muscle-chip { padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); color: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.2s; }
+    .muscle-chip:hover { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+    .muscle-chip.selected { background: var(--lifting-soft); border-color: var(--lifting-border); color: var(--lifting); }
+
+    /* Warmup */
+    .warmup-row { display: flex; align-items: center; justify-content: space-between; padding: 0 16px 10px; }
+    .warmup-label { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); }
+    .toggle-track { width: 44px; height: 24px; border-radius: 12px; background: rgba(255,255,255,0.12); cursor: pointer; position: relative; transition: background 0.2s; }
+    .toggle-track.on { background: var(--lifting); }
+    .toggle-knob { width: 20px; height: 20px; border-radius: 50%; background: #fff; position: absolute; top: 2px; left: 2px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+    .toggle-track.on .toggle-knob { left: 22px; }
+    .warmup-box { margin: 0 16px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: none; }
+    .warmup-box.visible { display: block; }
+    .warmup-input { width: 100%; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500; color: #fff; resize: none; min-height: 48px; }
+    .warmup-input::placeholder { color: rgba(255,255,255,0.15); }
+
+    /* Detail section */
+    .detail-section { margin: 0 16px 20px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; overflow: hidden; }
+    .detail-section-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--card-border); }
+    .badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.8px; background: var(--lifting-soft); color: var(--lifting); border: 1px solid var(--lifting-border); }
+
+    /* Exercise entries */
+    .exercise-entries { padding: 0 16px 12px; }
+    .exercise-entry { padding: 12px 0; border-bottom: 1px solid var(--card-border); }
+    .exercise-entry:last-child { border-bottom: none; }
+    .exercise-main-row { display: flex; align-items: center; gap: 10px; }
+    .exercise-num { width: 26px; height: 26px; border-radius: 8px; background: var(--lifting-soft); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: var(--lifting); flex-shrink: 0; }
+    .exercise-fields { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .exercise-name-input { background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 600; color: #fff; }
+    .exercise-name-input::placeholder { color: rgba(255,255,255,0.2); }
+    .exercise-sets-row { display: flex; gap: 8px; }
+    .mini-field { background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; gap: 4px; }
+    .mini-field span { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.5px; }
+    .mini-input { width: 36px; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 600; color: #fff; text-align: center; }
+    .mini-input::placeholder { color: rgba(255,255,255,0.15); }
+    .mini-field.empty-weight { border-color: var(--accent-border); background: var(--accent-soft); }
+    .mini-field.empty-weight span { color: var(--accent-light); }
+    .remove-exercise { background: none; border: none; cursor: pointer; padding: 4px; flex-shrink: 0; }
+    .remove-exercise svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.15); }
+    .remove-exercise:hover svg { fill: rgba(255,255,255,0.4); }
+
+    /* Dropset / Superset */
+    .set-type-row { display: flex; gap: 6px; margin-top: 6px; }
+    .set-type-chip { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); color: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.2s; }
+    .set-type-chip:hover { border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); }
+    .set-type-chip.active { background: rgba(255,165,0,0.12); border-color: rgba(255,165,0,0.35); color: #FFA500; }
+    .set-type-chip.superset.active { background: rgba(0,200,150,0.12); border-color: rgba(0,200,150,0.35); color: #00C896; }
+    .set-type-chip.bw.active { background: var(--accent-soft); border-color: var(--accent-border); color: var(--accent-light); }
+    .dropset-block { display: none; margin-top: 6px; padding: 8px 10px; background: rgba(255,165,0,0.06); border: 1px solid rgba(255,165,0,0.25); border-radius: 8px; }
+    .dropset-block.visible { display: flex; align-items: center; gap: 8px; }
+    .dropset-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #FFA500; padding: 3px 8px; background: rgba(255,165,0,0.12); border: 1px solid rgba(255,165,0,0.3); border-radius: 6px; flex-shrink: 0; }
+    .dropset-fields { display: flex; gap: 6px; flex: 1; }
+    .dropset-field { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,165,0,0.15); border-radius: 6px; padding: 5px 8px; display: flex; align-items: center; gap: 4px; }
+    .dropset-field span { font-size: 9px; color: rgba(255,165,0,0.5); text-transform: uppercase; letter-spacing: 0.5px; }
+    .dropset-input { width: 32px; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 600; color: #FFA500; text-align: center; }
+    .dropset-input::placeholder { color: rgba(255,165,0,0.25); }
+    .superset-block { display: none; margin-top: 6px; padding: 8px 10px; background: rgba(0,200,150,0.06); border: 1px solid rgba(0,200,150,0.25); border-radius: 8px; }
+    .superset-block.visible { display: block; }
+    .superset-tag { display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #00C896; padding: 3px 8px; background: rgba(0,200,150,0.12); border: 1px solid rgba(0,200,150,0.3); border-radius: 6px; margin-bottom: 6px; }
+    .superset-name-input { width: 100%; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+    .superset-name-input::placeholder { color: rgba(255,255,255,0.15); }
+    .superset-fields { display: flex; gap: 6px; }
+    .superset-field { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(0,200,150,0.15); border-radius: 6px; padding: 5px 8px; display: flex; align-items: center; gap: 4px; }
+    .superset-field span { font-size: 9px; color: rgba(0,200,150,0.5); text-transform: uppercase; letter-spacing: 0.5px; }
+    .superset-input { width: 32px; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 600; color: #00C896; text-align: center; }
+    .superset-input::placeholder { color: rgba(0,200,150,0.25); }
+
+    /* Add exercise button */
+    .add-exercise-btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 16px; margin: 0 16px 16px; border-radius: 12px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; background: var(--lifting-soft); color: var(--lifting); border: 1px dashed var(--lifting-border); }
+    .add-exercise-btn svg { width: 16px; height: 16px; fill: var(--lifting); }
+    .add-exercise-btn:hover { background: rgba(91,140,255,0.15); }
+
+    /* Instructions Toggle */
+    .instructions-row { display: flex; align-items: center; justify-content: space-between; padding: 0 16px 10px; }
+    .instructions-label { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); }
+    .instructions-box { margin: 0 16px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: none; }
+    .instructions-box.visible { display: block; }
+    .instructions-input { width: 100%; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 500; color: #fff; resize: none; min-height: 48px; }
+    .instructions-input::placeholder { color: rgba(255,255,255,0.15); }
+
+    /* Tag Users */
+    .tag-section { margin: 0 16px 16px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 16px; }
+    .tag-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); margin-bottom: 6px; }
+    .tag-input { width: 100%; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 15px; font-weight: 500; color: #fff; }
+    .tag-input::placeholder { color: rgba(255,255,255,0.2); }
+    .tag-optional { font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 6px; }
+
+    /* Post button */
+    .post-btn-container { padding: 8px 16px 120px; }
+    .post-btn { width: 100%; padding: 14px 0; border-radius: 14px; font-family: 'Barlow', sans-serif; font-size: 15px; font-weight: 700; text-align: center; cursor: pointer; border: none; background: var(--accent); color: #fff; box-shadow: 0 4px 20px var(--accent-glow); transition: all 0.2s; }
+    .post-btn:hover { background: var(--accent-light); }
+    .post-btn:active { transform: scale(0.98); }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: rgba(10,10,10,0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-around; padding: 8px 12px 28px; z-index: 100; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 6px 12px; }
+    .nav-item svg { width: 24px; height: 24px; fill: rgba(255,255,255,0.35); }
+    .nav-item span { font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 500; }
+    .nav-add { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; margin-top: -24px; cursor: pointer; box-shadow: 0 4px 20px var(--accent-glow); border: 3px solid var(--accent-light); }
+    .nav-add svg { width: 28px; height: 28px; fill: #fff; }
+    ::-webkit-scrollbar { width: 0; }
+    @media (min-width: 500px) { body { border-left: 3px solid rgba(255,255,255,0.08); border-right: 3px solid rgba(255,255,255,0.08); box-shadow: 0 0 80px rgba(0,0,0,0.5); } }
+  </style>
+</head>
+<body>
+
+  <div class="status-bar">
+    <div class="status-time">9:41</div>
+    <div class="status-icons">
+      <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.34C7 21.4 7.6 22 8.33 22h7.34c.73 0 1.33-.6 1.33-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    </div>
+  </div>
+
+  <div class="top-header">
+    <button class="back-btn" onclick="history.back()">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    </button>
+    <div class="header-title">LOG WORKOUT</div>
+    <div class="header-spacer"></div>
+  </div>
+
+  <div class="saved-badge">
+    <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+    Using saved workout: <strong>WEDNESDAY PULL DAY</strong>
+  </div>
+
+  <!-- Muscle Groups (pre-selected from saved) -->
+  <div class="section-label">Muscle Groups</div>
+  <div class="muscle-grid">
+    <div class="muscle-chip" onclick="this.classList.toggle('selected')">Chest</div>
+    <div class="muscle-chip selected" onclick="this.classList.toggle('selected')">Back</div>
+    <div class="muscle-chip" onclick="this.classList.toggle('selected')">Shoulders</div>
+    <div class="muscle-chip selected" onclick="this.classList.toggle('selected')">Biceps</div>
+    <div class="muscle-chip" onclick="this.classList.toggle('selected')">Triceps</div>
+    <div class="muscle-chip" onclick="this.classList.toggle('selected')">Quads</div>
+    <div class="muscle-chip" onclick="this.classList.toggle('selected')">Hamstrings</div>
+    <div class="muscle-chip" onclick="this.classList.toggle('selected')">Glutes</div>
+    <div class="muscle-chip" onclick="this.classList.toggle('selected')">Core</div>
+    <div class="muscle-chip" onclick="this.classList.toggle('selected')">Calves</div>
+  </div>
+
+  <!-- Warmup -->
+  <div class="warmup-row">
+    <span class="warmup-label">Include Warmup</span>
+    <div class="toggle-track" onclick="toggleWarmup(this)">
+      <div class="toggle-knob"></div>
+    </div>
+  </div>
+  <div class="warmup-box" id="warmupBox">
+    <textarea class="warmup-input" placeholder="e.g. 5 min treadmill, arm circles, light rows..."></textarea>
+  </div>
+
+  <div class="section-label">Fill in your weights</div>
+
+  <!-- Exercise List -->
+  <div class="detail-section">
+    <div class="detail-section-header">
+      <span class="badge">&#127947; Lifting</span>
+      <span style="flex:1;"></span>
+      <span style="font-size:11px; color:rgba(255,255,255,0.35);">Back & Bis &bull; 6 exercises</span>
+    </div>
+
+    <div class="exercise-entries" id="exerciseList">
+
+      <!-- Exercise 1 -->
+      <div class="exercise-entry">
+        <div class="exercise-main-row">
+          <div class="exercise-num">1</div>
+          <div class="exercise-fields">
+            <input class="exercise-name-input" type="text" value="Barbell Rows">
+            <div class="exercise-sets-row">
+              <div class="mini-field"><span>Sets</span><input class="mini-input" type="text" value="4"></div>
+              <div class="mini-field"><span>Reps</span><input class="mini-input" type="text" value="10"></div>
+              <div class="mini-field empty-weight"><span>Lbs</span><input class="mini-input" type="text" placeholder="?"></div>
+            </div>
+            <div class="set-type-row">
+              <div class="set-type-chip bw" onclick="toggleBW(this)">Bodyweight</div>
+              <div class="set-type-chip" onclick="toggleDropset(this)">Dropset</div>
+              <div class="set-type-chip superset" onclick="toggleSuperset(this)">Superset</div>
+            </div>
+          </div>
+          <button class="remove-exercise" onclick="this.closest('.exercise-entry').remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Exercise 2 -->
+      <div class="exercise-entry">
+        <div class="exercise-main-row">
+          <div class="exercise-num">2</div>
+          <div class="exercise-fields">
+            <input class="exercise-name-input" type="text" value="Lat Pulldowns">
+            <div class="exercise-sets-row">
+              <div class="mini-field"><span>Sets</span><input class="mini-input" type="text" value="4"></div>
+              <div class="mini-field"><span>Reps</span><input class="mini-input" type="text" value="12"></div>
+              <div class="mini-field empty-weight"><span>Lbs</span><input class="mini-input" type="text" placeholder="?"></div>
+            </div>
+            <div class="set-type-row">
+              <div class="set-type-chip bw" onclick="toggleBW(this)">Bodyweight</div>
+              <div class="set-type-chip" onclick="toggleDropset(this)">Dropset</div>
+              <div class="set-type-chip superset" onclick="toggleSuperset(this)">Superset</div>
+            </div>
+          </div>
+          <button class="remove-exercise" onclick="this.closest('.exercise-entry').remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Exercise 3 -->
+      <div class="exercise-entry">
+        <div class="exercise-main-row">
+          <div class="exercise-num">3</div>
+          <div class="exercise-fields">
+            <input class="exercise-name-input" type="text" value="Seated Cable Rows">
+            <div class="exercise-sets-row">
+              <div class="mini-field"><span>Sets</span><input class="mini-input" type="text" value="3"></div>
+              <div class="mini-field"><span>Reps</span><input class="mini-input" type="text" value="12"></div>
+              <div class="mini-field empty-weight"><span>Lbs</span><input class="mini-input" type="text" placeholder="?"></div>
+            </div>
+            <div class="set-type-row">
+              <div class="set-type-chip bw" onclick="toggleBW(this)">Bodyweight</div>
+              <div class="set-type-chip" onclick="toggleDropset(this)">Dropset</div>
+              <div class="set-type-chip superset" onclick="toggleSuperset(this)">Superset</div>
+            </div>
+          </div>
+          <button class="remove-exercise" onclick="this.closest('.exercise-entry').remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Exercise 4 -->
+      <div class="exercise-entry">
+        <div class="exercise-main-row">
+          <div class="exercise-num">4</div>
+          <div class="exercise-fields">
+            <input class="exercise-name-input" type="text" value="Face Pulls">
+            <div class="exercise-sets-row">
+              <div class="mini-field"><span>Sets</span><input class="mini-input" type="text" value="3"></div>
+              <div class="mini-field"><span>Reps</span><input class="mini-input" type="text" value="15"></div>
+              <div class="mini-field empty-weight"><span>Lbs</span><input class="mini-input" type="text" placeholder="?"></div>
+            </div>
+            <div class="set-type-row">
+              <div class="set-type-chip bw" onclick="toggleBW(this)">Bodyweight</div>
+              <div class="set-type-chip" onclick="toggleDropset(this)">Dropset</div>
+              <div class="set-type-chip superset" onclick="toggleSuperset(this)">Superset</div>
+            </div>
+          </div>
+          <button class="remove-exercise" onclick="this.closest('.exercise-entry').remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Exercise 5 -->
+      <div class="exercise-entry">
+        <div class="exercise-main-row">
+          <div class="exercise-num">5</div>
+          <div class="exercise-fields">
+            <input class="exercise-name-input" type="text" value="Dumbbell Curls">
+            <div class="exercise-sets-row">
+              <div class="mini-field"><span>Sets</span><input class="mini-input" type="text" value="3"></div>
+              <div class="mini-field"><span>Reps</span><input class="mini-input" type="text" value="12"></div>
+              <div class="mini-field empty-weight"><span>Lbs</span><input class="mini-input" type="text" placeholder="?"></div>
+            </div>
+            <div class="set-type-row">
+              <div class="set-type-chip bw" onclick="toggleBW(this)">Bodyweight</div>
+              <div class="set-type-chip" onclick="toggleDropset(this)">Dropset</div>
+              <div class="set-type-chip superset" onclick="toggleSuperset(this)">Superset</div>
+            </div>
+          </div>
+          <button class="remove-exercise" onclick="this.closest('.exercise-entry').remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Exercise 6 -->
+      <div class="exercise-entry">
+        <div class="exercise-main-row">
+          <div class="exercise-num">6</div>
+          <div class="exercise-fields">
+            <input class="exercise-name-input" type="text" value="Hammer Curls">
+            <div class="exercise-sets-row">
+              <div class="mini-field"><span>Sets</span><input class="mini-input" type="text" value="3"></div>
+              <div class="mini-field"><span>Reps</span><input class="mini-input" type="text" value="10"></div>
+              <div class="mini-field empty-weight"><span>Lbs</span><input class="mini-input" type="text" placeholder="?"></div>
+            </div>
+            <div class="set-type-row">
+              <div class="set-type-chip bw" onclick="toggleBW(this)">Bodyweight</div>
+              <div class="set-type-chip" onclick="toggleDropset(this)">Dropset</div>
+              <div class="set-type-chip superset" onclick="toggleSuperset(this)">Superset</div>
+            </div>
+          </div>
+          <button class="remove-exercise" onclick="this.closest('.exercise-entry').remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="add-exercise-btn" onclick="addExercise()">
+      <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      Add Exercise
+    </button>
+  </div>
+
+  <!-- Instructions Toggle -->
+  <div class="instructions-row">
+    <span class="instructions-label">Include Instructions</span>
+    <div class="toggle-track" id="instructionsToggle" onclick="toggleInstructions(this)">
+      <div class="toggle-knob"></div>
+    </div>
+  </div>
+  <div class="instructions-box" id="instructionsBox">
+    <textarea class="instructions-input" placeholder="e.g. Rest 60-90 seconds between sets. Focus on form over weight."></textarea>
+  </div>
+
+  <!-- Tag Users -->
+  <div class="section-label">Optional</div>
+  <div class="tag-section">
+    <div class="tag-label">Tag Users</div>
+    <input class="tag-input" type="text" placeholder="@username">
+    <div class="tag-optional">Tag friends who were part of this sessn</div>
+  </div>
+
+  <!-- Post Button -->
+  <div class="post-btn-container">
+    <button class="post-btn" onclick="location.href='home.html'">Post Sessn</button>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="location.href='home.html'"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+    <div class="nav-item" onclick="location.href='search.html'"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg><span>Search</span></div>
+    <div class="nav-add" onclick="location.href='independent post 1.html'"><svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div>
+    <div class="nav-item" onclick="location.href='friends leaderboard.html'"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg><span>Community</span></div>
+    <div class="nav-item" onclick="location.href='profile.html'"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Profile</span></div>
+  </div>
+
+  <script>
+    function toggleWarmup(track) {
+      track.classList.toggle('on');
+      document.getElementById('warmupBox').classList.toggle('visible');
+    }
+
+    function toggleInstructions(track) {
+      track.classList.toggle('on');
+      document.getElementById('instructionsBox').classList.toggle('visible');
+    }
+
+    function toggleBW(chip) {
+      var entry = chip.closest('.exercise-entry');
+      var isActive = chip.classList.toggle('active');
+      var weightField = entry.querySelector('.mini-field.empty-weight') || entry.querySelectorAll('.mini-field')[2];
+      if (!weightField) return;
+      var input = weightField.querySelector('.mini-input');
+      if (isActive) {
+        input.value = 'BW';
+        input.readOnly = true;
+        weightField.classList.remove('empty-weight');
+        weightField.style.background = 'var(--accent-soft)';
+        weightField.style.borderColor = 'var(--accent-border)';
+        input.style.color = 'var(--accent-light)';
+      } else {
+        input.value = '';
+        input.placeholder = '?';
+        input.readOnly = false;
+        weightField.classList.add('empty-weight');
+        weightField.style.background = '';
+        weightField.style.borderColor = '';
+        input.style.color = '';
+      }
+    }
+
+    function toggleDropset(chip) {
+      var entry = chip.closest('.exercise-entry');
+      var isActive = chip.classList.toggle('active');
+      var block = entry.querySelector('.dropset-block');
+      if (!block) {
+        block = document.createElement('div');
+        block.className = 'dropset-block';
+        block.innerHTML = '<div class="dropset-tag">Dropset</div><div class="dropset-fields"><div class="dropset-field"><span>Set</span><input class="dropset-input" type="text" placeholder="\u2014"></div><div class="dropset-field"><span>Reps</span><input class="dropset-input" type="text" placeholder="\u2014"></div><div class="dropset-field"><span>Lbs</span><input class="dropset-input" type="text" placeholder="\u2014"></div></div>';
+        chip.closest('.exercise-fields').appendChild(block);
+      }
+      block.classList.toggle('visible', isActive);
+    }
+
+    function toggleSuperset(chip) {
+      var entry = chip.closest('.exercise-entry');
+      var isActive = chip.classList.toggle('active');
+      var block = entry.querySelector('.superset-block');
+      if (!block) {
+        block = document.createElement('div');
+        block.className = 'superset-block';
+        block.innerHTML = '<div class="superset-tag">Superset with</div><input class="superset-name-input" type="text" placeholder="Exercise name..."><div class="superset-fields"><div class="superset-field"><span>Sets</span><input class="superset-input" type="text" placeholder="\u2014"></div><div class="superset-field"><span>Reps</span><input class="superset-input" type="text" placeholder="\u2014"></div><div class="superset-field"><span>Lbs</span><input class="superset-input" type="text" placeholder="\u2014"></div></div>';
+        chip.closest('.exercise-fields').appendChild(block);
+      }
+      block.classList.toggle('visible', isActive);
+    }
+
+    var exerciseCount = 6;
+    function addExercise() {
+      exerciseCount++;
+      var html = '<div class="exercise-entry"><div class="exercise-main-row">' +
+        '<div class="exercise-num">' + exerciseCount + '</div>' +
+        '<div class="exercise-fields">' +
+        '<input class="exercise-name-input" type="text" placeholder="Exercise name...">' +
+        '<div class="exercise-sets-row">' +
+        '<div class="mini-field"><span>Sets</span><input class="mini-input" type="text" placeholder="\u2014"></div>' +
+        '<div class="mini-field"><span>Reps</span><input class="mini-input" type="text" placeholder="\u2014"></div>' +
+        '<div class="mini-field empty-weight"><span>Lbs</span><input class="mini-input" type="text" placeholder="?"></div>' +
+        '</div>' +
+        '<div class="set-type-row">' +
+        '<div class="set-type-chip bw" onclick="toggleBW(this)">Bodyweight</div>' +
+        '<div class="set-type-chip" onclick="toggleDropset(this)">Dropset</div>' +
+        '<div class="set-type-chip superset" onclick="toggleSuperset(this)">Superset</div>' +
+        '</div></div>' +
+        '<button class="remove-exercise" onclick="this.closest(\'.exercise-entry\').remove()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>' +
+        '</div></div>';
+      document.getElementById('exerciseList').insertAdjacentHTML('beforeend', html);
+    }
+  </script>
+
+</body>
+</html>

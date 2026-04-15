@@ -21,7 +21,6 @@
       position: relative;
       overflow-x: hidden;
     }
-
     :root {
       --accent: #635BFF;
       --accent-light: #8B85FF;
@@ -32,136 +31,194 @@
       --card-border: rgba(255,255,255,0.06);
     }
 
-    .status-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 24px 0; font-size: 12px; font-weight: 600;
-    }
+    .status-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px 0; font-size: 12px; font-weight: 600; }
     .status-time { font-size: 15px; font-weight: 700; }
     .status-icons { display: flex; gap: 6px; align-items: center; }
     .status-icons svg { width: 16px; height: 16px; fill: #fff; }
-
-    .top-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 20px 8px;
-    }
-    .back-btn {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,0.06);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background 0.2s;
-      border: none;
-    }
+    .top-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px 8px; }
+    .back-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; border: none; }
     .back-btn:hover { background: rgba(255,255,255,0.1); }
     .back-btn svg { width: 20px; height: 20px; fill: rgba(255,255,255,0.7); }
-    .header-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px; letter-spacing: 1.5px;
-    }
+    .header-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; }
     .header-spacer { width: 40px; }
-
-    .section-subtitle {
-      padding: 4px 20px 16px;
-      font-size: 13px; color: rgba(255,255,255,0.45);
-      text-align: center;
-    }
-
-    .search-container {
-      padding: 0 16px 12px;
-    }
-    .search-bar {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 12px 16px;
-    }
+    .section-subtitle { padding: 4px 20px 16px; font-size: 13px; color: rgba(255,255,255,0.45); text-align: center; }
+    .search-container { padding: 0 16px 12px; }
+    .search-bar { display: flex; align-items: center; gap: 12px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px 16px; }
     .search-bar svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.35); }
-    .search-bar input {
-      flex: 1; background: none; border: none; outline: none;
-      font-family: 'Barlow', sans-serif; font-size: 14px; color: #fff;
-    }
+    .search-bar input { flex: 1; background: none; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 14px; color: #fff; }
     .search-bar input::placeholder { color: rgba(255,255,255,0.3); }
 
-    .saved-list {
-      padding: 0 16px 120px;
-      display: flex; flex-direction: column; gap: 10px;
-    }
+    .saved-list { padding: 0 16px 120px; display: flex; flex-direction: column; gap: 12px; }
 
-    .saved-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px;
+    .saved-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      cursor: pointer;
-      transition: border-color 0.2s, transform 0.15s;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.2s;
     }
-    .saved-item:active { transform: scale(0.98); }
-    .saved-item:hover { border-color: var(--accent-border); }
-    .saved-thumb {
-      width: 60px; height: 60px; border-radius: 12px;
-      object-fit: cover; flex-shrink: 0;
-    }
-    .saved-info { flex: 1; min-width: 0; }
-    .saved-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 17px; letter-spacing: 0.8px;
-      margin-bottom: 3px;
-    }
-    .saved-meta {
-      font-size: 11px; color: rgba(255,255,255,0.4);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .saved-meta-dot {
-      width: 3px; height: 3px;
-      background: rgba(255,255,255,0.3);
-      border-radius: 50%;
-    }
-    .saved-author {
-      font-size: 11px; color: var(--accent-light);
-      font-weight: 600; margin-top: 3px;
-    }
-    .saved-arrow svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.3); flex-shrink: 0; }
+    .saved-card:hover { border-color: var(--accent-border); }
 
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    .saved-card-header {
+      padding: 14px 16px 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .saved-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px; letter-spacing: 0.8px;
+    }
+    .saved-card-meta {
+      font-size: 10px; color: rgba(255,255,255,0.4);
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 2px;
+    }
+    .saved-meta-dot { width: 3px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 50%; }
+    .saved-card-author {
+      font-size: 10px; color: var(--accent-light); font-weight: 600;
+    }
+
+    /* Exercise preview */
+    .exercise-preview {
+      padding: 0 16px 10px;
+    }
+    .exercise-preview-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 6px 0;
+    }
+    .ep-num {
+      width: 20px; height: 20px; border-radius: 6px;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 11px; color: var(--accent-light);
+      flex-shrink: 0;
+    }
+    .ep-name {
+      flex: 1; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7);
+    }
+    .ep-detail {
+      font-size: 10px; color: rgba(255,255,255,0.35);
+      flex-shrink: 0;
+    }
+    .ep-more {
+      font-size: 11px; color: rgba(255,255,255,0.3);
+      padding: 4px 0 0;
+    }
+
+    /* Buttons row */
+    .saved-card-actions {
+      display: flex; gap: 8px;
+      padding: 8px 16px 14px;
+      border-top: 1px solid var(--card-border);
+    }
+    .saved-card-btn {
+      flex: 1;
+      padding: 9px 0;
+      border-radius: 10px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 12px; font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    .saved-card-btn:active { transform: scale(0.97); }
+    .saved-card-btn.use {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 10px var(--accent-glow);
+    }
+    .saved-card-btn.use:hover { background: var(--accent-light); }
+    .saved-card-btn.view {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.6);
+      border: 1px solid var(--card-border);
+    }
+    .saved-card-btn.view:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* ── Workout Details Popup ── */
+    .details-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      z-index: 500; display: none;
+    }
+    .details-backdrop.visible { display: block; }
+    .details-panel {
+      position: fixed;
+      bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
       width: 100%; max-width: 430px;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      display: flex; align-items: center; justify-content: space-around;
-      padding: 8px 12px 28px; z-index: 100;
+      background: #1a1a1a;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      z-index: 600;
+      padding: 0 0 32px;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+      max-height: 80vh;
+      overflow-y: auto;
+      transition: transform 0.3s ease;
     }
-    .nav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      cursor: pointer; padding: 6px 12px;
+    .details-panel.visible { transform: translateX(-50%) translateY(0); }
+    .details-handle { display: flex; justify-content: center; padding: 12px 0 4px; }
+    .details-handle div { width: 40px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; }
+    .details-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
+    .details-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 1.2px;
+    }
+    .details-subtitle { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    .details-use-btn {
+      font-family: 'Barlow', sans-serif;
+      font-size: 12px; font-weight: 700;
+      color: #fff; background: var(--accent);
+      border: none; border-radius: 10px;
+      padding: 9px 18px; cursor: pointer;
+      box-shadow: 0 2px 10px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .details-use-btn:hover { background: var(--accent-light); }
+    .exercise-list { padding: 0 20px; }
+    .exercise-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .exercise-item:last-child { border-bottom: none; }
+    .ex-num {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--accent-soft);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px; color: var(--accent-light);
+      flex-shrink: 0;
+    }
+    .ex-info { flex: 1; }
+    .ex-name { font-size: 13px; font-weight: 600; color: #fff; }
+    .ex-detail { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    .ex-weight {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px; color: rgba(255,255,255,0.6);
+      flex-shrink: 0;
+    }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: rgba(10,10,10,0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-around; padding: 8px 12px 28px; z-index: 100; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 6px 12px; }
     .nav-item svg { width: 24px; height: 24px; fill: rgba(255,255,255,0.35); }
     .nav-item span { font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 500; }
-    .nav-add {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      margin-top: -24px; cursor: pointer;
-      box-shadow: 0 4px 20px var(--accent-glow);
-      border: 3px solid var(--accent-light);
-    }
+    .nav-item.active svg { fill: var(--accent-light); }
+    .nav-item.active span { color: var(--accent-light); }
+    .nav-add { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; margin-top: -24px; cursor: pointer; box-shadow: 0 4px 20px var(--accent-glow); border: 3px solid var(--accent-light); }
     .nav-add svg { width: 28px; height: 28px; fill: #fff; }
-
     ::-webkit-scrollbar { width: 0; }
-
-    @media (min-width: 500px) {
-      body {
-        border-left: 3px solid rgba(255,255,255,0.08);
-        border-right: 3px solid rgba(255,255,255,0.08);
-        box-shadow: 0 0 80px rgba(0,0,0,0.5);
-      }
-    }
+    @media (min-width: 500px) { body { border-left: 3px solid rgba(255,255,255,0.08); border-right: 3px solid rgba(255,255,255,0.08); box-shadow: 0 0 80px rgba(0,0,0,0.5); } }
   </style>
 </head>
 <body>
 
-  <!-- Status Bar -->
   <div class="status-bar">
     <div class="status-time">9:41</div>
     <div class="status-icons">
@@ -170,14 +227,12 @@
     </div>
   </div>
 
-  <!-- SESSN Logo -->
   <div style="padding: 18px 20px 0; text-align: center;">
     <span style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 4px; background: linear-gradient(135deg, var(--accent-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">SESSN</span>
   </div>
 
-  <!-- Top Header -->
   <div class="top-header">
-    <button class="back-btn" onclick="location.href='independent post 1.html'">
+    <button class="back-btn" onclick="history.back()">
       <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
     </button>
     <div class="header-title">SELECT SAVED WORKOUT</div>
@@ -186,7 +241,6 @@
 
   <div class="section-subtitle">Pick a workout you've saved before</div>
 
-  <!-- Search bar -->
   <div class="search-container">
     <div class="search-bar">
       <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
@@ -194,84 +248,181 @@
     </div>
   </div>
 
-  <!-- Saved Workouts -->
   <div class="saved-list">
 
-    <div class="saved-item" onclick="location.href='home.html'">
-      <img class="saved-thumb" src="Images/pull-day.jpg" alt="" style="object-position: center 55%;">
-      <div class="saved-info">
-        <div class="saved-title">WEDNESDAY PULL DAY</div>
-        <div class="saved-meta">
-          <span>Back & Bis</span>
-          <span class="saved-meta-dot"></span>
-          <span>55 min</span>
-          <span class="saved-meta-dot"></span>
-          <span>6 exercises</span>
+    <!-- Card 1: Wednesday Pull Day -->
+    <div class="saved-card">
+      <div class="saved-card-header">
+        <div>
+          <div class="saved-card-title">WEDNESDAY PULL DAY</div>
+          <div class="saved-card-meta">
+            <span>Back & Bis</span>
+            <span class="saved-meta-dot"></span>
+            <span>55 min</span>
+            <span class="saved-meta-dot"></span>
+            <span>6 exercises</span>
+          </div>
+          <div class="saved-card-author">@lydiakoehler</div>
         </div>
-        <div class="saved-author">@lydiakoehler</div>
       </div>
-      <div class="saved-arrow">
-        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <div class="exercise-preview">
+        <div class="exercise-preview-row">
+          <div class="ep-num">1</div>
+          <div class="ep-name">Barbell Rows</div>
+          <div class="ep-detail">4×10 · 135lb</div>
+        </div>
+        <div class="exercise-preview-row">
+          <div class="ep-num">2</div>
+          <div class="ep-name">Lat Pulldowns</div>
+          <div class="ep-detail">4×12 · 120lb</div>
+        </div>
+        <div class="exercise-preview-row">
+          <div class="ep-num">3</div>
+          <div class="ep-name">Seated Cable Rows</div>
+          <div class="ep-detail">3×12 · 110lb</div>
+        </div>
+        <div class="ep-more">+3 more exercises</div>
+      </div>
+      <div class="saved-card-actions">
+        <button class="saved-card-btn view" onclick="openDetails(0)">View Full Workout</button>
+        <button class="saved-card-btn use" onclick="location.href='saved-workout-post.html'">Use This</button>
       </div>
     </div>
 
-    <div class="saved-item" onclick="location.href='home.html'">
-      <img class="saved-thumb" src="Images/leg-day.jpg" alt="" style="object-position: center 15%;">
-      <div class="saved-info">
-        <div class="saved-title">FRIDAY LEG DAY</div>
-        <div class="saved-meta">
-          <span>Quads & Glutes</span>
-          <span class="saved-meta-dot"></span>
-          <span>47 min</span>
-          <span class="saved-meta-dot"></span>
-          <span>7 exercises</span>
+    <!-- Card 2: Friday Leg Day -->
+    <div class="saved-card">
+      <div class="saved-card-header">
+        <div>
+          <div class="saved-card-title">FRIDAY LEG DAY</div>
+          <div class="saved-card-meta">
+            <span>Quads & Glutes</span>
+            <span class="saved-meta-dot"></span>
+            <span>47 min</span>
+            <span class="saved-meta-dot"></span>
+            <span>7 exercises</span>
+          </div>
+          <div class="saved-card-author">@lydiakoehler</div>
         </div>
-        <div class="saved-author">@lydiakoehler</div>
       </div>
-      <div class="saved-arrow">
-        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <div class="exercise-preview">
+        <div class="exercise-preview-row">
+          <div class="ep-num">1</div>
+          <div class="ep-name">Barbell Squats</div>
+          <div class="ep-detail">4×8 · 225lb</div>
+        </div>
+        <div class="exercise-preview-row">
+          <div class="ep-num">2</div>
+          <div class="ep-name">Leg Press</div>
+          <div class="ep-detail">4×12 · 360lb</div>
+        </div>
+        <div class="exercise-preview-row">
+          <div class="ep-num">3</div>
+          <div class="ep-name">Romanian Deadlifts</div>
+          <div class="ep-detail">3×10 · 185lb</div>
+        </div>
+        <div class="ep-more">+4 more exercises</div>
+      </div>
+      <div class="saved-card-actions">
+        <button class="saved-card-btn view" onclick="openDetails(1)">View Full Workout</button>
+        <button class="saved-card-btn use" onclick="location.href='saved-workout-post.html'">Use This</button>
       </div>
     </div>
 
-    <div class="saved-item" onclick="location.href='home.html'">
-      <img class="saved-thumb" src="Images/post-thanksgiving.jpg" alt="" style="object-position: center 30%;">
-      <div class="saved-info">
-        <div class="saved-title">PUSH DAY PUMP</div>
-        <div class="saved-meta">
-          <span>Chest & Tris</span>
-          <span class="saved-meta-dot"></span>
-          <span>50 min</span>
-          <span class="saved-meta-dot"></span>
-          <span>8 exercises</span>
+    <!-- Card 3: Push Day Pump -->
+    <div class="saved-card">
+      <div class="saved-card-header">
+        <div>
+          <div class="saved-card-title">PUSH DAY PUMP</div>
+          <div class="saved-card-meta">
+            <span>Chest & Tris</span>
+            <span class="saved-meta-dot"></span>
+            <span>50 min</span>
+            <span class="saved-meta-dot"></span>
+            <span>8 exercises</span>
+          </div>
+          <div class="saved-card-author">@dschwartz42</div>
         </div>
-        <div class="saved-author">@dschwartz42</div>
       </div>
-      <div class="saved-arrow">
-        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <div class="exercise-preview">
+        <div class="exercise-preview-row">
+          <div class="ep-num">1</div>
+          <div class="ep-name">Bench Press</div>
+          <div class="ep-detail">4×8 · 185lb</div>
+        </div>
+        <div class="exercise-preview-row">
+          <div class="ep-num">2</div>
+          <div class="ep-name">Incline DB Press</div>
+          <div class="ep-detail">4×10 · 65lb</div>
+        </div>
+        <div class="exercise-preview-row">
+          <div class="ep-num">3</div>
+          <div class="ep-name">Cable Flyes</div>
+          <div class="ep-detail">3×12 · 30lb</div>
+        </div>
+        <div class="ep-more">+5 more exercises</div>
+      </div>
+      <div class="saved-card-actions">
+        <button class="saved-card-btn view" onclick="openDetails(2)">View Full Workout</button>
+        <button class="saved-card-btn use" onclick="location.href='saved-workout-post.html'">Use This</button>
       </div>
     </div>
 
-    <div class="saved-item" onclick="location.href='home.html'">
-      <img class="saved-thumb" src="Images/pull-day.jpg" alt="" style="object-position: center 35%;">
-      <div class="saved-info">
-        <div class="saved-title">SHOULDER DESTROYER</div>
-        <div class="saved-meta">
-          <span>Shoulders</span>
-          <span class="saved-meta-dot"></span>
-          <span>40 min</span>
-          <span class="saved-meta-dot"></span>
-          <span>5 exercises</span>
+    <!-- Card 4: Shoulder Destroyer -->
+    <div class="saved-card">
+      <div class="saved-card-header">
+        <div>
+          <div class="saved-card-title">SHOULDER DESTROYER</div>
+          <div class="saved-card-meta">
+            <span>Shoulders</span>
+            <span class="saved-meta-dot"></span>
+            <span>40 min</span>
+            <span class="saved-meta-dot"></span>
+            <span>5 exercises</span>
+          </div>
+          <div class="saved-card-author">@arod.fitness</div>
         </div>
-        <div class="saved-author">@arod.fitness</div>
       </div>
-      <div class="saved-arrow">
-        <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      <div class="exercise-preview">
+        <div class="exercise-preview-row">
+          <div class="ep-num">1</div>
+          <div class="ep-name">OHP</div>
+          <div class="ep-detail">4×8 · 115lb</div>
+        </div>
+        <div class="exercise-preview-row">
+          <div class="ep-num">2</div>
+          <div class="ep-name">Lateral Raises</div>
+          <div class="ep-detail">4×15 · 20lb</div>
+        </div>
+        <div class="exercise-preview-row">
+          <div class="ep-num">3</div>
+          <div class="ep-name">Face Pulls</div>
+          <div class="ep-detail">3×15 · 40lb</div>
+        </div>
+        <div class="ep-more">+2 more exercises</div>
+      </div>
+      <div class="saved-card-actions">
+        <button class="saved-card-btn view" onclick="openDetails(3)">View Full Workout</button>
+        <button class="saved-card-btn use" onclick="location.href='saved-workout-post.html'">Use This</button>
       </div>
     </div>
 
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- Workout Details Popup -->
+  <div class="details-backdrop" onclick="closeDetails()"></div>
+  <div class="details-panel" id="detailsPanel">
+    <div class="details-handle"><div></div></div>
+    <div class="details-header">
+      <div>
+        <div class="details-title" id="detTitle"></div>
+        <div class="details-subtitle" id="detSub"></div>
+      </div>
+      <button class="details-use-btn" onclick="location.href='saved-workout-post.html'">Use This</button>
+    </div>
+    <div class="exercise-list" id="detExercises"></div>
+  </div>
+
+  <!-- Bottom Nav -->
   <div class="bottom-nav">
     <div class="nav-item" onclick="location.href='home.html'">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -293,6 +444,83 @@
       <span>Profile</span>
     </div>
   </div>
+
+  <script>
+    var workouts = [
+      {
+        title: 'WEDNESDAY PULL DAY',
+        sub: 'Back & Bis \u2022 55 min \u2022 6 exercises',
+        exercises: [
+          { name:'Barbell Rows', detail:'4 sets \u00D7 10 reps', weight:'135 LB' },
+          { name:'Lat Pulldowns', detail:'4 sets \u00D7 12 reps', weight:'120 LB' },
+          { name:'Seated Cable Rows', detail:'3 sets \u00D7 12 reps', weight:'110 LB' },
+          { name:'Face Pulls', detail:'3 sets \u00D7 15 reps', weight:'40 LB' },
+          { name:'Dumbbell Curls', detail:'3 sets \u00D7 12 reps', weight:'30 LB' },
+          { name:'Hammer Curls', detail:'3 sets \u00D7 10 reps', weight:'25 LB' },
+        ]
+      },
+      {
+        title: 'FRIDAY LEG DAY',
+        sub: 'Quads & Glutes \u2022 47 min \u2022 7 exercises',
+        exercises: [
+          { name:'Barbell Squats', detail:'4 sets \u00D7 8 reps', weight:'225 LB' },
+          { name:'Leg Press', detail:'4 sets \u00D7 12 reps', weight:'360 LB' },
+          { name:'Romanian Deadlifts', detail:'3 sets \u00D7 10 reps', weight:'185 LB' },
+          { name:'Leg Extensions', detail:'3 sets \u00D7 15 reps', weight:'120 LB' },
+          { name:'Leg Curls', detail:'3 sets \u00D7 12 reps', weight:'90 LB' },
+          { name:'Hip Thrusts', detail:'3 sets \u00D7 12 reps', weight:'205 LB' },
+          { name:'Calf Raises', detail:'4 sets \u00D7 20 reps', weight:'135 LB' },
+        ]
+      },
+      {
+        title: 'PUSH DAY PUMP',
+        sub: 'Chest & Tris \u2022 50 min \u2022 8 exercises',
+        exercises: [
+          { name:'Bench Press', detail:'4 sets \u00D7 8 reps', weight:'185 LB' },
+          { name:'Incline DB Press', detail:'4 sets \u00D7 10 reps', weight:'65 LB' },
+          { name:'Cable Flyes', detail:'3 sets \u00D7 12 reps', weight:'30 LB' },
+          { name:'Dips', detail:'3 sets \u00D7 12 reps', weight:'BW' },
+          { name:'Tricep Pushdowns', detail:'3 sets \u00D7 15 reps', weight:'50 LB' },
+          { name:'Overhead Extension', detail:'3 sets \u00D7 12 reps', weight:'40 LB' },
+          { name:'Lateral Raises', detail:'3 sets \u00D7 15 reps', weight:'20 LB' },
+          { name:'Push-Ups', detail:'3 sets \u00D7 20 reps', weight:'BW' },
+        ]
+      },
+      {
+        title: 'SHOULDER DESTROYER',
+        sub: 'Shoulders \u2022 40 min \u2022 5 exercises',
+        exercises: [
+          { name:'OHP', detail:'4 sets \u00D7 8 reps', weight:'115 LB' },
+          { name:'Lateral Raises', detail:'4 sets \u00D7 15 reps', weight:'20 LB' },
+          { name:'Face Pulls', detail:'3 sets \u00D7 15 reps', weight:'40 LB' },
+          { name:'Rear Delt Flyes', detail:'3 sets \u00D7 12 reps', weight:'15 LB' },
+          { name:'Shrugs', detail:'4 sets \u00D7 12 reps', weight:'70 LB' },
+        ]
+      }
+    ];
+
+    function openDetails(idx) {
+      var w = workouts[idx];
+      document.getElementById('detTitle').textContent = w.title;
+      document.getElementById('detSub').textContent = w.sub;
+      var html = '';
+      for (var i = 0; i < w.exercises.length; i++) {
+        var e = w.exercises[i];
+        html += '<div class="exercise-item">' +
+          '<div class="ex-num">' + (i+1) + '</div>' +
+          '<div class="ex-info"><div class="ex-name">' + e.name + '</div><div class="ex-detail">' + e.detail + '</div></div>' +
+          '<div class="ex-weight">' + e.weight + '</div></div>';
+      }
+      document.getElementById('detExercises').innerHTML = html;
+      document.querySelector('.details-backdrop').classList.add('visible');
+      document.getElementById('detailsPanel').classList.add('visible');
+    }
+
+    function closeDetails() {
+      document.querySelector('.details-backdrop').classList.remove('visible');
+      document.getElementById('detailsPanel').classList.remove('visible');
+    }
+  </script>
 
 </body>
 </html>

@@ -211,6 +211,27 @@
     .saved-list.active { display: flex; }
     .posts-grid.hidden { display: none; }
 
+    /* Reposts grid */
+    .reposts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2px;
+      padding: 2px 0 120px;
+      display: none;
+    }
+    .reposts-grid.active { display: grid; }
+    .repost-badge {
+      position: absolute; top: 6px; left: 6px;
+      display: flex; align-items: center; gap: 3px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px);
+      border-radius: 6px;
+      padding: 3px 6px;
+      z-index: 2;
+    }
+    .repost-badge svg { width: 10px; height: 10px; fill: rgba(255,255,255,0.7); }
+    .repost-badge span { font-size: 9px; color: rgba(255,255,255,0.7); font-weight: 600; }
+
     .saved-item {
       display: flex; align-items: center; gap: 12px;
       padding: 12px;
@@ -336,7 +357,7 @@
 
   <!-- Action Buttons -->
   <div class="profile-actions">
-    <button class="profile-btn primary">Edit Profile</button>
+    <button class="profile-btn primary" onclick="location.href='edit-profile.html'">Edit Profile</button>
     <button class="profile-btn secondary" onclick="location.href='share home.html'">Share Profile</button>
   </div>
 
@@ -372,12 +393,12 @@
     </div>
   </div>
 
-  <!-- Posts Grid -->
+  <!-- Posts Grid (Brady's own posts only) -->
   <div class="posts-grid" id="posts-grid">
-    <div class="grid-item" onclick="location.href='post-expansion.html'">
+    <div class="grid-item" onclick="location.href='post-expansion-thanksgiving.html'">
       <img src="Images/post-thanksgiving.jpg" alt="Post Thanksgiving Workout" style="object-position: center 30%;">
       <div class="grid-overlay">
-        <div class="grid-title">CHEST & TRIS</div>
+        <div class="grid-title">POST THANKSGIVING WORKOUT</div>
         <div class="grid-meta">
           <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
           24
@@ -387,7 +408,7 @@
     <div class="grid-item" onclick="location.href='post-expansion.html'">
       <img src="Images/pull-day.jpg" alt="Wednesday Pull Day" style="object-position: center 55%;">
       <div class="grid-overlay">
-        <div class="grid-title">BACK & BIS</div>
+        <div class="grid-title">WEDNESDAY PULL DAY</div>
         <div class="grid-meta">
           <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
           31
@@ -396,28 +417,56 @@
     </div>
   </div>
 
-  <!-- Saved Workouts List -->
-  <div class="saved-list" id="saved-list">
-
-    <div class="saved-item">
-      <img class="saved-thumb" src="Images/pull-day.jpg" alt="" style="object-position: center 55%;">
-      <div class="saved-info">
-        <div class="saved-title">WEDNESDAY PULL DAY</div>
-        <div class="saved-meta">
-          <span>Back & Bis</span>
-          <span class="saved-meta-dot"></span>
-          <span>55 min</span>
-          <span class="saved-meta-dot"></span>
-          <span>6 exercises</span>
-        </div>
-        <div class="saved-author">@lydiakoehler</div>
+  <!-- Reposts Grid (posts by others that Brady reposted/shared) -->
+  <div class="reposts-grid" id="reposts-grid">
+    <div class="grid-item" onclick="location.href='post-expansion-armblast.html'">
+      <div class="repost-badge">
+        <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+        <span>arod.fitness</span>
       </div>
-      <div class="saved-bookmark">
-        <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+      <img src="Images/arm-blast.jpg" alt="Monday Arm Blast" style="object-position: center 30%;">
+      <div class="grid-overlay">
+        <div class="grid-title">MONDAY ARM BLAST</div>
+        <div class="grid-meta">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          29
+        </div>
       </div>
     </div>
+    <div class="grid-item" onclick="location.href='post-expansion-class.html'">
+      <div class="repost-badge">
+        <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+        <span>lydiakoehler</span>
+      </div>
+      <img src="Images/lydia-class.png" alt="Saturday CrossFit WOD" style="object-position: center 5%;">
+      <div class="grid-overlay">
+        <div class="grid-title">SATURDAY CROSSFIT WOD</div>
+        <div class="grid-meta">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          42
+        </div>
+      </div>
+    </div>
+    <div class="grid-item" onclick="location.href='post-expansion-legday.html'">
+      <div class="repost-badge">
+        <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+        <span>lydiakoehler</span>
+      </div>
+      <img src="Images/leg-day.jpg" alt="Friday Leg Day" style="object-position: center 15%;">
+      <div class="grid-overlay">
+        <div class="grid-title">FRIDAY LEG DAY</div>
+        <div class="grid-meta">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          18
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div class="saved-item">
+  <!-- Saved Workouts List (workouts from the home feed) -->
+  <div class="saved-list" id="saved-list">
+
+    <div class="saved-item" onclick="location.href='post-expansion-legday.html'" style="cursor:pointer;">
       <img class="saved-thumb" src="Images/leg-day.jpg" alt="" style="object-position: center 15%;">
       <div class="saved-info">
         <div class="saved-title">FRIDAY LEG DAY</div>
@@ -435,34 +484,16 @@
       </div>
     </div>
 
-    <div class="saved-item">
-      <img class="saved-thumb" src="Images/post-thanksgiving.jpg" alt="" style="object-position: center 30%;">
+    <div class="saved-item" onclick="location.href='post-expansion-armblast.html'" style="cursor:pointer;">
+      <img class="saved-thumb" src="Images/arm-blast.jpg" alt="" style="object-position: center 30%;">
       <div class="saved-info">
-        <div class="saved-title">PUSH DAY PUMP</div>
+        <div class="saved-title">MONDAY ARM BLAST</div>
         <div class="saved-meta">
-          <span>Chest & Tris</span>
+          <span>Arms</span>
           <span class="saved-meta-dot"></span>
-          <span>50 min</span>
+          <span>35 min</span>
           <span class="saved-meta-dot"></span>
-          <span>8 exercises</span>
-        </div>
-        <div class="saved-author">@dschwartz42</div>
-      </div>
-      <div class="saved-bookmark">
-        <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-      </div>
-    </div>
-
-    <div class="saved-item">
-      <img class="saved-thumb" src="Images/pull-day.jpg" alt="" style="object-position: center 35%;">
-      <div class="saved-info">
-        <div class="saved-title">SHOULDER DESTROYER</div>
-        <div class="saved-meta">
-          <span>Shoulders</span>
-          <span class="saved-meta-dot"></span>
-          <span>40 min</span>
-          <span class="saved-meta-dot"></span>
-          <span>5 exercises</span>
+          <span>6 exercises</span>
         </div>
         <div class="saved-author">@arod.fitness</div>
       </div>
@@ -501,16 +532,21 @@
       document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
       el.classList.add('active');
 
-      const postsGrid = document.getElementById('posts-grid');
-      const savedList = document.getElementById('saved-list');
-      const label = el.textContent.trim();
+      var postsGrid = document.getElementById('posts-grid');
+      var repostsGrid = document.getElementById('reposts-grid');
+      var savedList = document.getElementById('saved-list');
+      var label = el.textContent.trim();
+
+      postsGrid.classList.add('hidden');
+      repostsGrid.classList.remove('active');
+      savedList.classList.remove('active');
 
       if (label === 'Saved') {
-        postsGrid.classList.add('hidden');
         savedList.classList.add('active');
+      } else if (label === 'Reposts') {
+        repostsGrid.classList.add('active');
       } else {
         postsGrid.classList.remove('hidden');
-        savedList.classList.remove('active');
       }
     }
 

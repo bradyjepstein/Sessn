@@ -67,7 +67,6 @@
     z-index: 2;
   }
 
-  /* ── Top Bar ── */
   .top-bar {
     position: absolute;
     top: 54px;
@@ -98,7 +97,6 @@
     text-shadow: 0 2px 12px rgba(0,0,0,0.5);
   }
 
-  /* ── Username Row ── */
   .post-user-row {
     position: absolute;
     top: 106px;
@@ -108,9 +106,9 @@
   }
   .post-avatar {
     width: 30px; height: 30px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    background: linear-gradient(135deg, #5BDB6D, #5BE8D5);
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 12px; color: #fff;
+    font-weight: 700; font-size: 10px; color: #fff;
     border: 2px solid rgba(255,255,255,0.2);
   }
   .post-user-info {}
@@ -121,7 +119,6 @@
     font-size: 10px; color: rgba(255,255,255,0.5);
   }
 
-  /* ── Location ── */
   .location {
     display: inline-flex;
     align-items: center;
@@ -144,7 +141,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* ── Workout Title ── */
   .workout-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 30px;
@@ -155,7 +151,6 @@
     text-shadow: 0 2px 20px rgba(0,0,0,0.4);
   }
 
-  /* ── Title + Stats Row ── */
   .title-stats-row {
     display: flex;
     align-items: flex-end;
@@ -199,13 +194,8 @@
     margin-left: 2px;
   }
 
-  /* Old stats-row (hidden) */
-  .stats-row {
-    display: none;
-  }
-
+  .stats-row { display: none; }
   .info-chips-col { display: none; }
-
   .stat-block { display: none; }
   .stat-block.heatmap-block {
     display: flex;
@@ -214,7 +204,6 @@
     flex-shrink: 0;
   }
 
-  /* Compact inline info chips */
   .info-chip {
     display: inline-flex; align-items: center; gap: 6px;
     background: rgba(255,255,255,0.1);
@@ -237,13 +226,11 @@
     position: relative;
   }
   .heatmap-figure { display: none; }
-
   .heatmap-wrap {
     position: relative;
     width: 110px;
     line-height: 0;
   }
-  /* Base layer — white outlines on dark bg */
   .heatmap-png {
     width: 100%;
     height: auto;
@@ -251,19 +238,13 @@
     filter: invert(1) saturate(0) brightness(1.6) contrast(1.4);
     opacity: 0.85;
   }
-  /* Red-tinted overlay clipped to specific muscle regions */
   .heatmap-png-red {
     position: absolute;
     inset: 0;
     width: 100%;
     height: auto;
-    /* Push reds and yellows to bright red */
     filter: brightness(0.85) saturate(3) hue-rotate(-15deg);
-    /* Multiply blend so the white background of the PNG disappears,
-       leaving only the colored muscle pixels visible */
     mix-blend-mode: screen;
-    /* Show only the back-muscle area on the back body
-       and the biceps on the front body */
     clip-path: url(#muscleHighlightClip);
     pointer-events: none;
   }
@@ -279,7 +260,6 @@
   .stat-label { display: none; }
   .stat-value { display: none; }
 
-  /* ── Bottom Actions ── */
   .bottom-actions {
     display: flex; align-items: center; gap: 20px;
     margin-top: 24px;
@@ -315,7 +295,6 @@
   .save-btn:active { transform: scale(0.96); }
   .save-btn svg { width: 14px; height: 14px; fill: #fff; }
 
-  /* ── View Workout Details Button ── */
   .view-details-hint {
     text-align: center;
     margin-top: 14px;
@@ -334,7 +313,6 @@
     border-color: var(--accent-border);
   }
 
-  /* ── Workout Details Drop-Up ── */
   .details-backdrop {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.6);
@@ -430,7 +408,6 @@
     flex-shrink: 0;
   }
 
-  /* ── Warmup & Instructions Display ── */
   .warmup-display, .instructions-display {
     margin: 0 20px;
     padding: 12px 14px;
@@ -472,7 +449,7 @@
 <body>
 
 <div class="story-frame">
-  <img class="bg-photo" src="Images/pull-day.jpg" alt="Wednesday Pull Day" style="object-position: center 55%;" />
+  <img class="bg-photo" src="Images/arm-blast.jpg" alt="Monday Arm Blast" style="object-position: center 30%;" />
   <div class="overlay"></div>
 
   <!-- Top Bar -->
@@ -488,70 +465,58 @@
 
     <!-- User Row -->
     <div class="post-user-row">
-      <div class="post-avatar">B</div>
+      <div class="post-avatar">AR</div>
       <div class="post-user-info">
-        <div class="post-username">bradyepstein</div>
-        <div class="post-date">5/24/25</div>
+        <div class="post-username">arod.fitness</div>
+        <div class="post-date">4/8/26</div>
       </div>
     </div>
 
-    <!-- Title row: location/title left, stats right -->
+    <!-- Title row -->
     <div class="title-stats-row">
       <div class="title-col">
-        <!-- Location -->
         <div class="location">
           <svg class="location-pin" viewBox="0 0 16 16" fill="none">
             <path d="M8 1C5.24 1 3 3.24 3 6c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 7a2 2 0 110-4 2 2 0 010 4z" fill="rgba(255,255,255,0.85)"/>
           </svg>
-          <span class="location-text">Wells Ave YMCA</span>
+          <span class="location-text">Nic Rec Center</span>
         </div>
-        <!-- Title -->
-        <div class="workout-title">Wednesday<br/>Pull Day</div>
+        <div class="workout-title">Monday<br/>Arm Blast</div>
       </div>
 
-      <!-- Split + Time on right -->
       <div class="stat-col">
         <div>
           <div class="stat-item-label">Split</div>
-          <div class="stat-item-value">Back & Bis</div>
+          <div class="stat-item-value">Arms</div>
         </div>
         <div>
           <div class="stat-item-label">Time</div>
-          <div class="stat-item-value">55<span>MIN</span></div>
+          <div class="stat-item-value">35<span>MIN</span></div>
         </div>
       </div>
     </div>
 
     <!-- Stats Row -->
     <div class="stats-row">
-
-      <!-- Compact info chips on left -->
       <div class="info-chips-col">
         <div class="info-chip">
           <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/></svg>
-          <span class="info-chip-text">Back & Bis</span>
+          <span class="info-chip-text">Arms</span>
         </div>
         <div class="info-chip">
           <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-          <span class="info-chip-text">55 min</span>
+          <span class="info-chip-text">35 min</span>
         </div>
       </div>
-
-      <!-- Heatmap on right -->
       <div class="stat-block heatmap-block">
         <div class="stat-label">Muscles</div>
         <div class="heatmap-container">
           <div class="heatmap-wrap">
-            <!-- SVG clip-path definition (multiple rectangles defining bicep + back regions) -->
             <svg width="0" height="0" style="position:absolute">
               <defs>
                 <clipPath id="muscleHighlightClip" clipPathUnits="objectBoundingBox">
-                  <!-- Front body left bicep (narrow band on upper arm) -->
                   <rect x="0.128" y="0.30" width="0.052" height="0.17"/>
-                  <!-- Front body right bicep -->
                   <rect x="0.355" y="0.30" width="0.052" height="0.17"/>
-                  <!-- Back body upper back: traps, delts, lats, mid-back ONLY
-                       (avoiding head, arms, glutes, hamstrings) -->
                   <rect x="0.555" y="0.16" width="0.305" height="0.34"/>
                 </clipPath>
               </defs>
@@ -561,18 +526,17 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!-- Bottom Actions -->
     <div class="bottom-actions">
-      <button class="action-btn liked" onclick="toggleLike(this)">
-        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-        <span>31</span>
+      <button class="action-btn" onclick="toggleLike(this)">
+        <svg viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+        <span>29</span>
       </button>
       <button class="action-btn" onclick="toggleAction(this)">
         <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
-        <span>5</span>
+        <span>7</span>
       </button>
       <button class="action-btn" onclick="location.href='share home.html'">
         <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
@@ -585,20 +549,19 @@
     </div>
 
     <!-- View Workout Details -->
-    <div class="view-details-hint" onclick="location.href='workout-details.html'">View workout details &#9650;</div>
+    <div class="view-details-hint" onclick="location.href='workout-details-armblast.html'">View workout details &#9650;</div>
 
   </div>
 </div>
 
-<!-- ── Workout Details Drop-Up ── -->
 <div class="details-backdrop" onclick="closeDetails()"></div>
 <div class="dropup-panel">
   <div class="dropup-handle"><div></div></div>
 
   <div class="dropup-header">
     <div>
-      <div class="dropup-title">WEDNESDAY PULL DAY</div>
-      <div class="dropup-subtitle">Back & Bis &bull; 55 min &bull; 6 exercises</div>
+      <div class="dropup-title">MONDAY ARM BLAST</div>
+      <div class="dropup-subtitle">Arms &bull; 35 min &bull; 6 exercises</div>
     </div>
     <button class="save-workout-btn" onclick="toggleSaveWorkout(this)">
       <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
@@ -606,67 +569,55 @@
     </button>
   </div>
 
-  <!-- Warmup Display -->
-  <div class="warmup-display">
-    <div class="warmup-display-label">WARMUP</div>
-    <div class="warmup-display-text">5 min treadmill, arm circles, light bench press</div>
-  </div>
-
   <div class="exercise-list">
     <div class="exercise-item">
       <div class="exercise-num">1</div>
       <div class="exercise-info">
-        <div class="exercise-name">Barbell Rows</div>
+        <div class="exercise-name">Barbell Curls</div>
         <div class="exercise-detail">4 sets &times; 10 reps</div>
       </div>
-      <div class="exercise-weight">135 LB</div>
+      <div class="exercise-weight">75 LB</div>
     </div>
     <div class="exercise-item">
       <div class="exercise-num">2</div>
       <div class="exercise-info">
-        <div class="exercise-name">Lat Pulldowns</div>
-        <div class="exercise-detail">4 sets &times; 12 reps</div>
+        <div class="exercise-name">Hammer Curls</div>
+        <div class="exercise-detail">3 sets &times; 12 reps</div>
       </div>
-      <div class="exercise-weight">120 LB</div>
+      <div class="exercise-weight">30 LB</div>
     </div>
     <div class="exercise-item">
       <div class="exercise-num">3</div>
       <div class="exercise-info">
-        <div class="exercise-name">Seated Cable Rows</div>
-        <div class="exercise-detail">3 sets &times; 12 reps</div>
+        <div class="exercise-name">Preacher Curls</div>
+        <div class="exercise-detail">3 sets &times; 10 reps</div>
       </div>
-      <div class="exercise-weight">110 LB</div>
+      <div class="exercise-weight">45 LB</div>
     </div>
     <div class="exercise-item">
       <div class="exercise-num">4</div>
       <div class="exercise-info">
-        <div class="exercise-name">Face Pulls</div>
-        <div class="exercise-detail">3 sets &times; 15 reps</div>
+        <div class="exercise-name">Skull Crushers</div>
+        <div class="exercise-detail">3 sets &times; 10 reps</div>
       </div>
-      <div class="exercise-weight">40 LB</div>
+      <div class="exercise-weight">65 LB</div>
     </div>
     <div class="exercise-item">
       <div class="exercise-num">5</div>
       <div class="exercise-info">
-        <div class="exercise-name">Dumbbell Curls</div>
-        <div class="exercise-detail">3 sets &times; 12 reps</div>
+        <div class="exercise-name">Cable Curls</div>
+        <div class="exercise-detail">3 sets &times; 15 reps</div>
       </div>
       <div class="exercise-weight">30 LB</div>
     </div>
     <div class="exercise-item">
       <div class="exercise-num">6</div>
       <div class="exercise-info">
-        <div class="exercise-name">Hammer Curls</div>
-        <div class="exercise-detail">3 sets &times; 10 reps</div>
+        <div class="exercise-name">Tricep Dips</div>
+        <div class="exercise-detail">3 sets &times; 12 reps</div>
       </div>
-      <div class="exercise-weight">25 LB</div>
+      <div class="exercise-weight">BW</div>
     </div>
-  </div>
-
-  <!-- Instructions Display -->
-  <div class="instructions-display">
-    <div class="instructions-display-label">INSTRUCTIONS</div>
-    <div class="instructions-display-text">Rest 60-90 seconds between sets. Focus on form over weight.</div>
   </div>
 </div>
 

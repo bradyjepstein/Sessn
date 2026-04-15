@@ -117,6 +117,81 @@
     .settings-item.danger .settings-icon { background: rgba(255, 77, 106, 0.1); }
     .settings-item.danger .settings-icon svg { fill: #FF4D6A; }
 
+    /* ── Settings Detail Panel ── */
+    .detail-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      z-index: 500; display: none;
+    }
+    .detail-backdrop.visible { display: block; }
+    .detail-panel {
+      position: fixed;
+      bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
+      width: 100%; max-width: 430px;
+      background: #1a1a1a;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      z-index: 600;
+      padding: 0 20px 36px;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+      transition: transform 0.3s ease;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .detail-panel.visible { transform: translateX(-50%) translateY(0); }
+    .detail-handle { display: flex; justify-content: center; padding: 12px 0 8px; }
+    .detail-handle div { width: 40px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; }
+    .detail-panel-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 1.5px;
+      text-align: center; margin-bottom: 16px;
+    }
+    .detail-option {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .detail-option:last-child { border-bottom: none; }
+    .detail-option-label { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.7); }
+    .detail-option-value { font-size: 13px; color: rgba(255,255,255,0.4); }
+    .detail-toggle {
+      width: 44px; height: 24px; border-radius: 12px;
+      background: rgba(255,255,255,0.12);
+      cursor: pointer; position: relative;
+      transition: background 0.2s;
+    }
+    .detail-toggle.on { background: var(--accent); }
+    .detail-toggle-knob {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #fff; position: absolute; top: 2px; left: 2px;
+      transition: left 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .detail-toggle.on .detail-toggle-knob { left: 22px; }
+    .detail-input {
+      width: 100%; padding: 12px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px; color: #fff;
+      outline: none; margin-top: 12px;
+      transition: border-color 0.2s;
+    }
+    .detail-input:focus { border-color: var(--accent-border); }
+    .detail-save-btn {
+      width: 100%; padding: 14px 0; margin-top: 16px;
+      border-radius: 14px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px; font-weight: 700;
+      text-align: center; cursor: pointer; border: none;
+      background: var(--accent); color: #fff;
+      box-shadow: 0 2px 12px var(--accent-glow);
+      transition: all 0.2s;
+    }
+    .detail-save-btn:hover { background: var(--accent-light); }
+
     /* ── Bottom Nav ── */
     .bottom-nav {
       position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
@@ -177,7 +252,7 @@
 
   <!-- Top Header -->
   <div class="top-header">
-    <button class="back-btn" onclick="location.href='profile.html'">
+    <button class="back-btn" onclick="history.back()">
       <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
     </button>
     <div class="header-title">SETTINGS</div>
@@ -191,7 +266,7 @@
     <div class="section-label">Account</div>
     <div class="settings-group">
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('personal')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
         </div>
@@ -199,7 +274,7 @@
         <div class="settings-chevron"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </div>
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('password')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
         </div>
@@ -207,7 +282,7 @@
         <div class="settings-chevron"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </div>
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('notifications')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 002 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
         </div>
@@ -223,7 +298,7 @@
     <div class="section-label">Privacy</div>
     <div class="settings-group">
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('privacy')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
         </div>
@@ -231,7 +306,7 @@
         <div class="settings-chevron"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </div>
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('blocked')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46A11.804 11.804 0 001 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>
         </div>
@@ -247,7 +322,7 @@
     <div class="section-label">Activity</div>
     <div class="settings-group">
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('activity')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0013 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
         </div>
@@ -255,7 +330,7 @@
         <div class="settings-chevron"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </div>
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('reposts')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
         </div>
@@ -263,7 +338,7 @@
         <div class="settings-chevron"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </div>
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('saved')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
         </div>
@@ -279,7 +354,7 @@
     <div class="section-label">Support</div>
     <div class="settings-group">
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('help')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
         </div>
@@ -287,7 +362,7 @@
         <div class="settings-chevron"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
       </div>
 
-      <div class="settings-item">
+      <div class="settings-item" onclick="openSetting('about')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
         </div>
@@ -301,7 +376,7 @@
   <!-- Log Out -->
   <div class="settings-section" style="padding-bottom: 120px;">
     <div class="settings-group">
-      <div class="settings-item danger">
+      <div class="settings-item danger" onclick="openSetting('logout')">
         <div class="settings-icon">
           <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
         </div>
@@ -333,6 +408,112 @@
       <span>Profile</span>
     </div>
   </div>
+
+  <!-- Settings Detail Panel -->
+  <div class="detail-backdrop" onclick="closeSetting()"></div>
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-handle"><div></div></div>
+    <div class="detail-panel-title" id="detailTitle"></div>
+    <div id="detailContent"></div>
+  </div>
+
+  <script>
+    var settingsData = {
+      personal: {
+        title: 'PERSONAL DETAILS',
+        content: '<div class="detail-option"><div class="detail-option-label">Name</div><div class="detail-option-value">Brady Epstein</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Username</div><div class="detail-option-value">bradyepstein</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Email</div><div class="detail-option-value">brady@email.com</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Phone</div><div class="detail-option-value">+1 (775) ***-****</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Bio</div><div class="detail-option-value">Gym rat. No days off.</div></div>' +
+          '<button class="detail-save-btn">Edit Details</button>'
+      },
+      password: {
+        title: 'PASSWORD & SECURITY',
+        content: '<div class="detail-option"><div class="detail-option-label">Change Password</div><div class="settings-chevron"><svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.2)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Two-Factor Authentication</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Login Activity</div><div class="detail-option-value">Last login: today</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Trusted Devices</div><div class="detail-option-value">2 devices</div></div>'
+      },
+      notifications: {
+        title: 'NOTIFICATIONS',
+        content: '<div class="detail-option"><div class="detail-option-label">Push Notifications</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Likes</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Reposts</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">New Followers</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Streak Reminders</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Group Updates</div><div class="detail-toggle" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>'
+      },
+      privacy: {
+        title: 'ACCOUNT PRIVACY',
+        content: '<div class="detail-option"><div class="detail-option-label">Private Account</div><div class="detail-toggle" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Show Activity Status</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Share Location on Map</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Allow Tagging</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Show Streak to Others</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>'
+      },
+      blocked: {
+        title: 'BLOCKED USERS',
+        content: '<div style="text-align:center;padding:32px 0;color:rgba(255,255,255,0.3);font-size:13px;">No blocked users</div>'
+      },
+      activity: {
+        title: 'YOUR ACTIVITY',
+        content: '<div class="detail-option"><div class="detail-option-label">Total Sessns</div><div class="detail-option-value">298</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">This Month</div><div class="detail-option-value">22 sessns</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Total Time</div><div class="detail-option-value">264 hours</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Current Streak</div><div class="detail-option-value">5 weeks \uD83D\uDD25</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Liked Posts</div><div class="detail-option-value">87 posts</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Member Since</div><div class="detail-option-value">Oct 2025</div></div>'
+      },
+      reposts: {
+        title: 'REPOSTS',
+        content: '<div class="detail-option"><div class="detail-option-label">Allow Reposts</div><div class="detail-toggle on" onclick="this.classList.toggle(\'on\')"><div class="detail-toggle-knob"></div></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Your Reposts</div><div class="detail-option-value">12 posts</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Your Posts Reposted</div><div class="detail-option-value">34 times</div></div>' +
+          '<button class="detail-save-btn" onclick="location.href=\'profile.html\'">View Reposts</button>'
+      },
+      saved: {
+        title: 'SAVED WORKOUTS',
+        content: '<div class="detail-option"><div class="detail-option-label">Saved Workouts</div><div class="detail-option-value">4 workouts</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Saved Posts</div><div class="detail-option-value">18 posts</div></div>' +
+          '<button class="detail-save-btn" onclick="location.href=\'profile.html\'">View Saved</button>'
+      },
+      help: {
+        title: 'HELP CENTER',
+        content: '<div class="detail-option"><div class="detail-option-label">FAQ</div><div class="settings-chevron"><svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.2)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Report a Problem</div><div class="settings-chevron"><svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.2)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Contact Support</div><div class="settings-chevron"><svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.2)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Community Guidelines</div><div class="settings-chevron"><svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.2)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></div>'
+      },
+      about: {
+        title: 'ABOUT SESSN',
+        content: '<div class="detail-option"><div class="detail-option-label">Version</div><div class="detail-option-value">1.0.0</div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Terms of Service</div><div class="settings-chevron"><svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.2)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Privacy Policy</div><div class="settings-chevron"><svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.2)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></div>' +
+          '<div class="detail-option"><div class="detail-option-label">Open Source Licenses</div><div class="settings-chevron"><svg viewBox="0 0 24 24" width="16" height="16" fill="rgba(255,255,255,0.2)"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div></div>'
+      },
+      logout: {
+        title: 'LOG OUT',
+        content: '<div style="text-align:center;padding:16px 0 20px;color:rgba(255,255,255,0.5);font-size:14px;">Are you sure you want to log out?</div>' +
+          '<button class="detail-save-btn" style="background:#FF4D6A;box-shadow:0 2px 12px rgba(255,77,106,0.3);" onclick="location.href=\'home.html\'">Log Out</button>' +
+          '<button class="detail-save-btn" style="background:rgba(255,255,255,0.06);box-shadow:none;margin-top:8px;" onclick="closeSetting()">Cancel</button>'
+      }
+    };
+
+    function openSetting(key) {
+      var data = settingsData[key];
+      if (!data) return;
+      document.getElementById('detailTitle').textContent = data.title;
+      document.getElementById('detailContent').innerHTML = data.content;
+      document.querySelector('.detail-backdrop').classList.add('visible');
+      document.getElementById('detailPanel').classList.add('visible');
+    }
+
+    function closeSetting() {
+      document.querySelector('.detail-backdrop').classList.remove('visible');
+      document.getElementById('detailPanel').classList.remove('visible');
+    }
+  </script>
 
 </body>
 </html>

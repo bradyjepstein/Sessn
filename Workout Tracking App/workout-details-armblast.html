@@ -33,7 +33,6 @@
       --card-border: rgba(255,255,255,0.06);
     }
 
-    /* ── Status Bar ── */
     .status-bar {
       display: flex; justify-content: space-between; align-items: center;
       padding: 12px 24px 0; font-size: 12px; font-weight: 600;
@@ -42,7 +41,6 @@
     .status-icons { display: flex; gap: 6px; align-items: center; }
     .status-icons svg { width: 16px; height: 16px; fill: #fff; }
 
-    /* ── Top Header ── */
     .top-header {
       display: flex; justify-content: space-between; align-items: center;
       padding: 16px 20px 8px;
@@ -50,9 +48,9 @@
     .top-header-left { display: flex; align-items: center; gap: 12px; }
     .avatar {
       width: 40px; height: 40px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), #8B85FF);
+      background: linear-gradient(135deg, #5BDB6D, #5BE8D5);
       display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 16px; color: #fff;
+      font-weight: 700; font-size: 14px; color: #fff;
       border: 2px solid var(--accent-border);
     }
     .greeting { font-size: 13px; color: rgba(255,255,255,0.5); }
@@ -72,7 +70,6 @@
       border-radius: 50%; border: 2px solid #0a0a0a;
     }
 
-    /* ── Section Header ── */
     .section-header {
       display: flex; justify-content: space-between; align-items: center;
       padding: 20px 20px 12px;
@@ -82,10 +79,8 @@
       font-size: 26px; letter-spacing: 2px;
     }
 
-    /* ── Feed ── */
     .feed { padding: 0 16px 120px; display: flex; flex-direction: column; gap: 16px; }
 
-    /* ── Workout Card ── */
     .workout-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -168,14 +163,12 @@
       font-size: 12px; color: var(--accent-light); cursor: pointer;
     }
 
-    /* ── Overlay Backdrop ── */
     .overlay-backdrop {
       position: fixed; inset: 0; z-index: 200;
       background: rgba(0,0,0,0.6);
       backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
     }
 
-    /* ── Drop-Up Panel ── */
     .dropup-panel {
       position: fixed;
       bottom: 0; left: 50%; transform: translateX(-50%);
@@ -235,7 +228,6 @@
     }
     .save-workout-btn.saved svg { fill: var(--accent-light); }
 
-    /* ── Exercise List ── */
     .exercise-list {
       padding: 0 20px;
     }
@@ -269,7 +261,6 @@
       flex-shrink: 0;
     }
 
-    /* ── Dropset annotation ── */
     .dropset-block {
       margin-top: 8px;
       margin-left: 42px;
@@ -297,7 +288,6 @@
     }
     .dropset-info strong { color: #FFA500; font-weight: 700; }
 
-    /* ── Superset annotation ── */
     .superset-block {
       margin-top: 8px;
       margin-left: 42px;
@@ -335,7 +325,6 @@
       flex-shrink: 0;
     }
 
-    /* ── Warmup & Instructions Display ── */
     .warmup-display, .instructions-display {
       margin: 0 20px;
       padding: 12px 14px;
@@ -365,7 +354,6 @@
       line-height: 1.5;
     }
 
-    /* ── Bottom Nav ── */
     .bottom-nav {
       position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
       width: 100%; max-width: 430px;
@@ -407,7 +395,6 @@
 </head>
 <body>
 
-  <!-- Status Bar -->
   <div class="status-bar">
     <div class="status-time">9:41</div>
     <div class="status-icons">
@@ -416,16 +403,15 @@
     </div>
   </div>
 
-  <!-- SESSN Logo -->
   <div style="padding: 18px 20px 0; text-align: center;">
     <span style="font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 4px; background: linear-gradient(135deg, var(--accent-light), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">SESSN</span>
   </div>
 
   <div class="top-header">
     <div class="top-header-left">
-      <div class="avatar">B</div>
+      <div class="avatar">AR</div>
       <div class="greeting">
-        <strong>Brady</strong>
+        <strong>Alex</strong>
       </div>
     </div>
     <div class="top-header-right">
@@ -436,46 +422,40 @@
     </div>
   </div>
 
-  <!-- Feed Header -->
   <div class="section-header">
     <h2>YOUR FEED</h2>
   </div>
 
-  <!-- Feed — Pull Day card visible behind overlay -->
   <div class="feed">
-
-    <!-- Card — Wednesday Pull Day (details expanded) -->
     <div class="workout-card">
       <div class="card-image">
-        <img src="Images/pull-day.jpg" alt="Wednesday Pull Day" style="object-position: center 55%;">
-        <div class="card-location">&#128205; Wells Ave YMCA</div>
-        <div class="card-workout-title">WEDNESDAY PULL DAY</div>
+        <img src="Images/arm-blast.jpg" alt="Monday Arm Blast" style="object-position: center 30%;">
+        <div class="card-location">&#128205; Nic Rec Center</div>
+        <div class="card-workout-title">MONDAY ARM BLAST</div>
       </div>
-      <div class="card-username-row"><span>bradyepstein</span><span class="card-username-date">5/24/25</span></div>
+      <div class="card-username-row"><span>arod.fitness</span><span class="card-username-date">4/8/26</span></div>
       <div class="card-stats">
         <div class="card-stat">
           <div class="card-stat-label">Split</div>
-          <div class="card-stat-value">BACK & BIS</div>
+          <div class="card-stat-value">ARMS</div>
         </div>
         <div class="card-stat">
           <div class="card-stat-label">Time</div>
-          <div class="card-stat-value">55 MIN</div>
+          <div class="card-stat-value">35 MIN</div>
         </div>
       </div>
       <div class="card-actions">
         <button class="card-action">
           <svg viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
-          <span>31</span>
+          <span>29</span>
         </button>
         <button class="card-action">
           <svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
-          <span>5</span>
+          <span>7</span>
         </button>
       </div>
-      <div class="card-caption"><strong>bradyepstein</strong> Back is getting wide. Trust the process.</div>
       <div class="card-tap-hint" style="color: var(--accent-light); font-weight: 600;">Viewing workout details &#9650;</div>
     </div>
-
   </div>
 
   <!-- Overlay Backdrop -->
@@ -487,8 +467,8 @@
 
     <div class="dropup-header">
       <div class="dropup-title-block">
-        <div class="dropup-title">WEDNESDAY PULL DAY</div>
-        <div class="dropup-subtitle">Back & Bis &bull; 55 min &bull; 6 exercises</div>
+        <div class="dropup-title">MONDAY ARM BLAST</div>
+        <div class="dropup-subtitle">Arms &bull; 35 min &bull; 6 exercises</div>
       </div>
       <button class="save-workout-btn" onclick="toggleSave(this)">
         <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2zm0 15l-5-2.18L7 18V5h10v13z"/></svg>
@@ -496,21 +476,15 @@
       </button>
     </div>
 
-    <!-- Warmup Display -->
-    <div class="warmup-display">
-      <div class="warmup-display-label">WARMUP</div>
-      <div class="warmup-display-text">5 min treadmill, arm circles, light bench press</div>
-    </div>
-
     <div class="exercise-list">
       <div class="exercise-item">
         <div class="exercise-row">
           <div class="exercise-num">1</div>
           <div class="exercise-info">
-            <div class="exercise-name">Barbell Rows</div>
+            <div class="exercise-name">Barbell Curls</div>
             <div class="exercise-detail">4 sets &times; 10 reps</div>
           </div>
-          <div class="exercise-weight">135 LB</div>
+          <div class="exercise-weight">75 LB</div>
         </div>
       </div>
 
@@ -518,15 +492,17 @@
         <div class="exercise-row">
           <div class="exercise-num">2</div>
           <div class="exercise-info">
-            <div class="exercise-name">Lat Pulldowns</div>
-            <div class="exercise-detail">4 sets &times; 12 reps</div>
+            <div class="exercise-name">Hammer Curls</div>
+            <div class="exercise-detail">3 sets &times; 12 reps</div>
           </div>
-          <div class="exercise-weight">120 LB</div>
+          <div class="exercise-weight">30 LB</div>
         </div>
-        <!-- Dropset on the last set -->
-        <div class="dropset-block">
-          <div class="dropset-tag">Dropset</div>
-          <div class="dropset-info">Starting on set <strong>4</strong> &bull; <strong>15 reps</strong> &bull; <strong>80 lb</strong></div>
+        <div class="superset-block">
+          <div class="superset-tag">Superset with</div>
+          <div class="superset-row">
+            <div class="superset-name">Tricep Pushdowns<div class="superset-detail">3 sets &times; 12 reps</div></div>
+            <div class="superset-weight">50 LB</div>
+          </div>
         </div>
       </div>
 
@@ -534,10 +510,14 @@
         <div class="exercise-row">
           <div class="exercise-num">3</div>
           <div class="exercise-info">
-            <div class="exercise-name">Seated Cable Rows</div>
-            <div class="exercise-detail">3 sets &times; 12 reps</div>
+            <div class="exercise-name">Preacher Curls</div>
+            <div class="exercise-detail">3 sets &times; 10 reps</div>
           </div>
-          <div class="exercise-weight">110 LB</div>
+          <div class="exercise-weight">45 LB</div>
+        </div>
+        <div class="dropset-block">
+          <div class="dropset-tag">Dropset</div>
+          <div class="dropset-info">Starting on set <strong>3</strong> &bull; <strong>12 reps</strong> &bull; <strong>25 lb</strong></div>
         </div>
       </div>
 
@@ -545,10 +525,10 @@
         <div class="exercise-row">
           <div class="exercise-num">4</div>
           <div class="exercise-info">
-            <div class="exercise-name">Face Pulls</div>
-            <div class="exercise-detail">3 sets &times; 15 reps</div>
+            <div class="exercise-name">Skull Crushers</div>
+            <div class="exercise-detail">3 sets &times; 10 reps</div>
           </div>
-          <div class="exercise-weight">40 LB</div>
+          <div class="exercise-weight">65 LB</div>
         </div>
       </div>
 
@@ -556,21 +536,10 @@
         <div class="exercise-row">
           <div class="exercise-num">5</div>
           <div class="exercise-info">
-            <div class="exercise-name">Dumbbell Curls</div>
-            <div class="exercise-detail">3 sets &times; 12 reps</div>
+            <div class="exercise-name">Cable Curls</div>
+            <div class="exercise-detail">3 sets &times; 15 reps</div>
           </div>
           <div class="exercise-weight">30 LB</div>
-        </div>
-        <!-- Superset with Hammer Curls -->
-        <div class="superset-block">
-          <div class="superset-tag">Superset with</div>
-          <div class="superset-row">
-            <div class="superset-name">
-              Hammer Curls
-              <div class="superset-detail">3 sets &times; 10 reps</div>
-            </div>
-            <div class="superset-weight">25 LB</div>
-          </div>
         </div>
       </div>
 
@@ -578,27 +547,21 @@
         <div class="exercise-row">
           <div class="exercise-num">6</div>
           <div class="exercise-info">
-            <div class="exercise-name">Preacher Curls</div>
-            <div class="exercise-detail">3 sets &times; 10 reps</div>
+            <div class="exercise-name">Tricep Dips</div>
+            <div class="exercise-detail">3 sets &times; 12 reps</div>
           </div>
-          <div class="exercise-weight">45 LB</div>
-        </div>
-        <!-- Dropset on the last set -->
-        <div class="dropset-block">
-          <div class="dropset-tag">Dropset</div>
-          <div class="dropset-info">Starting on set <strong>3</strong> &bull; <strong>12 reps</strong> &bull; <strong>30 lb</strong></div>
+          <div class="exercise-weight">BW</div>
         </div>
       </div>
     </div>
 
-    <!-- Instructions Display -->
     <div class="instructions-display">
       <div class="instructions-display-label">INSTRUCTIONS</div>
       <div class="instructions-display-text">Rest 60-90 seconds between sets. Focus on form over weight.</div>
     </div>
   </div>
 
-  <!-- Bottom Navigation — Home active -->
+  <!-- Bottom Navigation -->
   <div class="bottom-nav" style="z-index: 50;">
     <div class="nav-item active" onclick="location.href='home.html'">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>

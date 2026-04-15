@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Sessn — Join Group</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    :root {
+      --accent: #635BFF;
+      --accent-light: #8B85FF;
+      --accent-glow: rgba(99, 91, 255, 0.35);
+      --accent-soft: rgba(99, 91, 255, 0.12);
+      --accent-border: rgba(99, 91, 255, 0.25);
+      --card-bg: #151515;
+      --card-border: rgba(255,255,255,0.06);
+    }
+
+    .status-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 24px 0; font-size: 12px; font-weight: 600;
+    }
+    .status-time { font-size: 15px; font-weight: 700; }
+    .status-icons { display: flex; gap: 6px; align-items: center; }
+    .status-icons svg { width: 16px; height: 16px; fill: #fff; }
+
+    .top-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 20px 8px;
+    }
+    .back-btn {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s; border: none;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.1); }
+    .back-btn svg { width: 20px; height: 20px; fill: rgba(255,255,255,0.7); }
+    .header-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px; letter-spacing: 1.5px;
+    }
+    .header-spacer { width: 40px; }
+
+    .search-container { padding: 12px 16px; }
+    .search-bar {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 16px;
+      transition: border-color 0.2s;
+    }
+    .search-bar:focus-within { border-color: var(--accent-border); }
+    .search-bar svg { width: 18px; height: 18px; fill: rgba(255,255,255,0.35); flex-shrink: 0; }
+    .search-bar input {
+      flex: 1; background: none; border: none; outline: none;
+      font-family: 'Barlow', sans-serif; font-size: 14px; color: #fff;
+    }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .group-list {
+      padding: 0 16px 120px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .group-card-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .group-card-item:active { transform: scale(0.98); }
+    .group-card-item:hover { border-color: var(--accent-border); }
+    .group-card-top {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .group-card-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .group-card-icon.lift { background: rgba(91,140,255,0.15); }
+    .group-card-icon.cardio { background: rgba(91,219,109,0.15); }
+    .group-card-icon.crew { background: rgba(232,91,255,0.15); }
+    .group-card-icon.fire { background: rgba(255,140,66,0.15); }
+    .group-card-info { flex: 1; }
+    .group-card-name { font-size: 15px; font-weight: 700; }
+    .group-card-meta {
+      font-size: 11px; color: rgba(255,255,255,0.4);
+      margin-top: 2px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .group-card-badge {
+      font-size: 9px; font-weight: 700;
+      padding: 2px 8px; border-radius: 6px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .group-card-badge.public {
+      background: rgba(91,219,109,0.12);
+      color: #5BDB6D;
+      border: 1px solid rgba(91,219,109,0.3);
+    }
+    .group-card-badge.private {
+      background: rgba(255,140,66,0.12);
+      color: #FF8C42;
+      border: 1px solid rgba(255,140,66,0.3);
+    }
+
+    /* Preview popup */
+    .preview-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+      z-index: 500; display: none;
+    }
+    .preview-backdrop.visible { display: block; }
+    .preview-panel {
+      position: fixed;
+      bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
+      width: 100%; max-width: 430px;
+      background: #1a1a1a;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      z-index: 600;
+      padding: 0 20px 36px;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+      transition: transform 0.3s ease;
+    }
+    .preview-panel.visible { transform: translateX(-50%) translateY(0); }
+    .preview-handle {
+      display: flex; justify-content: center; padding: 12px 0 8px;
+    }
+    .preview-handle div {
+      width: 40px; height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
+    }
+    .preview-icon {
+      width: 64px; height: 64px; border-radius: 18px;
+      margin: 8px auto 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px;
+    }
+    .preview-name {
+      text-align: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px; letter-spacing: 1.5px;
+    }
+    .preview-meta {
+      text-align: center;
+      font-size: 12px; color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+    }
+    .preview-desc {
+      text-align: center;
+      font-size: 13px; color: rgba(255,255,255,0.55);
+      line-height: 1.5;
+      margin: 14px 0 20px;
+      padding: 0 10px;
+    }
+    .preview-stats {
+      display: flex; justify-content: center; gap: 24px;
+      margin-bottom: 20px;
+    }
+    .preview-stat { text-align: center; }
+    .preview-stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: 0.5px;
+    }
+    .preview-stat-label {
+      font-size: 9px; color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px; margin-top: 2px;
+    }
+    .preview-join-btn {
+      width: 100%;
+      padding: 14px 0;
+      border-radius: 14px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 15px; font-weight: 700;
+      text-align: center;
+      cursor: pointer; border: none;
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--accent-glow);
+      transition: all 0.2s;
+    }
+    .preview-join-btn:hover { background: var(--accent-light); }
+    .preview-join-btn:active { transform: scale(0.98); }
+    .preview-join-btn.request {
+      background: transparent;
+      border: 2px solid var(--accent-border);
+      color: var(--accent-light);
+      box-shadow: none;
+    }
+
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 430px;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; justify-content: space-around;
+      padding: 8px 12px 28px; z-index: 100;
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer; padding: 6px 12px;
+    }
+    .nav-item svg { width: 24px; height: 24px; fill: rgba(255,255,255,0.35); }
+    .nav-item span { font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 500; }
+    .nav-item.active svg { fill: var(--accent-light); }
+    .nav-item.active span { color: var(--accent-light); }
+    .nav-add {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: -24px; cursor: pointer;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .nav-add svg { width: 28px; height: 28px; fill: #fff; }
+    ::-webkit-scrollbar { width: 0; }
+    @media (min-width: 500px) {
+      body { border-left: 3px solid rgba(255,255,255,0.08); border-right: 3px solid rgba(255,255,255,0.08); box-shadow: 0 0 80px rgba(0,0,0,0.5); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="status-bar">
+    <div class="status-time">9:41</div>
+    <div class="status-icons">
+      <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.34C7 21.4 7.6 22 8.33 22h7.34c.73 0 1.33-.6 1.33-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    </div>
+  </div>
+
+  <div class="top-header">
+    <button class="back-btn" onclick="history.back()">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    </button>
+    <div class="header-title">JOIN A GROUP</div>
+    <div class="header-spacer"></div>
+  </div>
+
+  <div class="search-container">
+    <div class="search-bar">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" placeholder="Search groups...">
+    </div>
+  </div>
+
+  <div class="group-list">
+
+    <div class="group-card-item" onclick="openPreview('reno-runners','&#127939;','cardio','Reno Runners','18 members','public','A cardio-focused group for runners in the Reno area. Weekly 5K challenges and timed runs.','18','1.2K','Weekly')">
+      <div class="group-card-top">
+        <div class="group-card-icon cardio">&#127939;</div>
+        <div class="group-card-info">
+          <div class="group-card-name">Reno Runners</div>
+          <div class="group-card-meta">18 members <span class="group-card-badge public">Public</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-card-item" onclick="openPreview('iron-nation','&#127947;','lift','Iron Nation','42 members','public','Heavy lifters only. We track PRs and total volume lifted. Monthly competitions.','42','8.5K','Monthly')">
+      <div class="group-card-top">
+        <div class="group-card-icon lift">&#127947;</div>
+        <div class="group-card-info">
+          <div class="group-card-name">Iron Nation</div>
+          <div class="group-card-meta">42 members <span class="group-card-badge public">Public</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-card-item" onclick="openPreview('unc-gym-rats','&#128293;','fire','UNC Gym Rats','65 members','private','Private group for University of Nevada gym regulars. Request to join.','65','12K','All Time')">
+      <div class="group-card-top">
+        <div class="group-card-icon fire">&#128293;</div>
+        <div class="group-card-info">
+          <div class="group-card-name">UNC Gym Rats</div>
+          <div class="group-card-meta">65 members <span class="group-card-badge private">Private</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-card-item" onclick="openPreview('yoga-flow','&#129495;','crew','Yoga Flow Collective','24 members','public','Daily yoga sessions tracked. Find your zen and hold each other accountable.','24','890','Weekly')">
+      <div class="group-card-top">
+        <div class="group-card-icon crew">🧘</div>
+        <div class="group-card-info">
+          <div class="group-card-name">Yoga Flow Collective</div>
+          <div class="group-card-meta">24 members <span class="group-card-badge public">Public</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-card-item" onclick="openPreview('the-morning-crew','&#9889;','fire','The Morning Crew','15 members','private','5 AM grinders only. If you miss a week, you are out. Invite only.','15','4.2K','Monthly')">
+      <div class="group-card-top">
+        <div class="group-card-icon fire">&#9889;</div>
+        <div class="group-card-info">
+          <div class="group-card-name">The Morning Crew</div>
+          <div class="group-card-meta">15 members <span class="group-card-badge private">Private</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Preview Popup -->
+  <div class="preview-backdrop" onclick="closePreview()"></div>
+  <div class="preview-panel" id="previewPanel">
+    <div class="preview-handle"><div></div></div>
+    <div class="preview-icon" id="previewIcon"></div>
+    <div class="preview-name" id="previewName"></div>
+    <div class="preview-meta" id="previewMeta"></div>
+    <div class="preview-desc" id="previewDesc"></div>
+    <div class="preview-stats">
+      <div class="preview-stat">
+        <div class="preview-stat-value" id="previewMembers"></div>
+        <div class="preview-stat-label">Members</div>
+      </div>
+      <div class="preview-stat">
+        <div class="preview-stat-value" id="previewSessns"></div>
+        <div class="preview-stat-label">Total Sessns</div>
+      </div>
+      <div class="preview-stat">
+        <div class="preview-stat-value" id="previewPeriod"></div>
+        <div class="preview-stat-label">Leaderboard</div>
+      </div>
+    </div>
+    <button class="preview-join-btn" id="previewBtn" onclick="joinGroup(this)"></button>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="location.href='home.html'">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" onclick="location.href='search.html'">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <span>Search</span>
+    </div>
+    <div class="nav-add" onclick="location.href='independent post 1.html'">
+      <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    </div>
+    <div class="nav-item active" onclick="location.href='friends leaderboard.html'">
+      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      <span>Community</span>
+    </div>
+    <div class="nav-item" onclick="location.href='profile.html'">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      <span>Profile</span>
+    </div>
+  </div>
+
+  <script>
+    function openPreview(id, emoji, iconClass, name, meta, type, desc, members, sessns, period) {
+      document.getElementById('previewIcon').innerHTML = emoji;
+      document.getElementById('previewIcon').className = 'preview-icon group-card-icon ' + iconClass;
+      document.getElementById('previewName').textContent = name;
+      document.getElementById('previewMeta').textContent = meta + (type === 'private' ? ' \u2022 Private' : ' \u2022 Public');
+      document.getElementById('previewDesc').textContent = desc;
+      document.getElementById('previewMembers').textContent = members;
+      document.getElementById('previewSessns').textContent = sessns;
+      document.getElementById('previewPeriod').textContent = period;
+      const btn = document.getElementById('previewBtn');
+      if (type === 'private') {
+        btn.textContent = 'Request to Join';
+        btn.className = 'preview-join-btn request';
+      } else {
+        btn.textContent = 'Join Group';
+        btn.className = 'preview-join-btn';
+      }
+      document.querySelector('.preview-backdrop').classList.add('visible');
+      document.getElementById('previewPanel').classList.add('visible');
+    }
+    function closePreview() {
+      document.querySelector('.preview-backdrop').classList.remove('visible');
+      document.getElementById('previewPanel').classList.remove('visible');
+    }
+    function joinGroup(btn) {
+      if (btn.className.includes('request')) {
+        btn.textContent = 'Request Sent';
+        btn.style.opacity = '0.5';
+        btn.style.pointerEvents = 'none';
+      } else {
+        btn.textContent = 'Joined!';
+        btn.style.background = 'rgba(91,219,109,0.15)';
+        btn.style.color = '#5BDB6D';
+        btn.style.boxShadow = 'none';
+        btn.style.border = '1px solid rgba(91,219,109,0.3)';
+        setTimeout(() => location.href = 'friends leaderboard.html', 800);
+      }
+    }
+  </script>
+
+</body>
+</html>
